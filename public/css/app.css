@@ -1,0 +1,146 @@
+/* File: public/css/app.css */
+#map {
+    width: 100%;
+    height: 550px;
+    border: 2px solid #ccc;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.carousel-image {
+    width: 500px;  /* Set your desired width */
+    height: 300px; /* Set your desired height */
+    object-fit: cover; /* Ensures the image covers the area */
+}
+
+
+#popup-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* High z-index to stay above other elements */
+    width: auto;
+    max-width: 400px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#skate-spot-form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#map.add-marker-cursor {
+    cursor: crosshair; /* Changes the cursor to a + when marker placement is active */
+}
+
+.nav-link:hover {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5) !important;
+}
+
+.nav-link.active {
+    font-weight: bold;
+}
+
+.img-fluid{
+
+    height: 300px; 
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .img-fluid {
+      height: 200px !important;
+    }
+  }
+
+  /* Even smaller height for very small screens */
+@media (max-width: 576px) {
+    .img-fluid {
+      height: 150px;
+    }
+  }
+
+
+/* app.css */
+
+.profile-image-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    border-radius: 10px; /* Rounded corners */
+    padding: 5px; /* Spacing around the image */
+    width: auto; /* Responsive width */
+    height: auto; /* Responsive height */
+    display: flex; /* Centering */
+    justify-content: center; /* Center the image */
+}
+
+/* Responsive Profile Image */
+.profile-image {
+    width: 10vw; /* Width relative to viewport */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 80px; /* Max width */
+    max-height: 80px; /* Max height */
+    object-fit: cover; /* Cover the container */
+    border-radius: 10px; /* Match container's border radius */
+}
+
+/* Responsive Username */
+.username {
+    margin: 0; /* Remove default margin */
+    font-weight: 700;
+    color: black; /* White text color */
+    font-size: 1.5vw; /* Responsive font size */
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px; /* Spacing around the image */
+    border-radius: 10px; /* Rounded corners */
+}
+
+@media (max-width: 500px) {
+    .username {
+        font-size: 3vw; /* Increase font size */
+    }
+}
+
+.social-icons-container {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons-container a {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.social-icon {
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.social-icon:hover {
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    .username {
+        font-size: 4vw;
+    }
+
+    .social-icon {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+.social-icons-container a:hover {
+    background-color: rgba(251, 150, 150, 0.8); /* Semi-transparent white */
+}
+
+.table-striped tr:hover{
+    background-color: rgba(81, 81, 81, 0.5)!important;
+    transition: background-color 0.2s ease-in-out;
+
+}
