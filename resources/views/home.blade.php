@@ -7,12 +7,16 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/skateModal.css') }}">
+  <link rel="shortcut icon" href="#" />
+  <!-- Add Font Awesome CSS if not already included -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ route('welcome') }}">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('images/Logo2.svg') }}" alt="Logo" height="60" class="d-inline-block align-text-top">
             </a>
             <!-- Hamburger Menu (for mobile view) -->
@@ -24,10 +28,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('skate-spots') ? 'active' : '' }}" href="/skate-spots">Skate spots</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('skateparks') ? 'active' : '' }}" href="/skateparks">Skateparks</a>
+                    <a class="nav-link" href="{{ route('topSpots') }}">Top Spots</a>
                 </li>
                 <li class="nav-item">
                     @auth
@@ -35,17 +36,32 @@
                     @endauth    
                 </li>
                 <li class="nav-item">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button class="nav-link" type="submit" style="border: none; background: none; color: rgb(9, 89, 250);">
-                            Logout
-                        </button>
-                    </form>
-                </li>
+                    @auth
+                        <a class="nav-link" href="{{ route('logout') }}" style="border: none; background: none; color: rgb(9, 89, 250);"    
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                           Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    @endauth
+                
+                    @guest
+                        <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}" style="border: none; background: none; color: rgb(9, 89, 250);">Login</a>
+                    @endguest
+                </li>  
             </ul>
             </div>
         </div>
     </nav>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <h1>Welcome, {{ Auth::user()->username }}!</h1>
     <div class="d-flex justify-content-center align-items-center my-4">
         <button id="add-skate-spot" class="btn btn-primary p-2">Add Skate Spot</button>
@@ -53,10 +69,126 @@
     <div id="popup-notification" class="alert alert-info text-center" role="alert" style="display: none;">
         Drop marker in map to add a skate spot.
     </div>      
-    <div id="map"></div>
-    <div class="modal fade" id="skateSpotModal" tabindex="-1" aria-labelledby="skateSpotModalLabel" aria-hidden="true">
+    <div id="map">
+        <script>
+            // Pass skate spots data from PHP to JavaScript
+                var skateSpots = @json($skateSpots);
+        </script>
+    </div>
+ 
+
+    @if(isset($selectedSkateSpot))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const skateSpot = @json($selectedSkateSpot);
+                console.log("HOME PAGE");
+
+                const carouselInner = document.querySelector('#carouselExampleControls .carousel-inner');
+                carouselInner.innerHTML = ''; // Clear existing items
+                
+                skateSpot.images.forEach((image, index) => {
+                    const activeClass = index === 0 ? 'active' : '';
+
+                    carouselInner.innerHTML += `
+                        <div class="carousel-item ${activeClass}">
+                            <img class="d-block w-100" src="/storage/${image.path}" alt="Slide ${index + 1}">
+                        </div>  
+                    `;
+                });
+
+                document.getElementById('userProfilePic').src = skateSpot.user.profile_picture ? '/storage/' + skateSpot.user.profile_picture : '/images/person.svg';
+                document.getElementById('username').textContent = skateSpot.user.username;
+                document.getElementById('modalTitle').textContent = skateSpot.title;
+                document.getElementById('modalDate').textContent = new Date(skateSpot.created_at).toLocaleDateString();
+                document.getElementById('modalDescription').textContent = skateSpot.description;
+                document.getElementById('modalLatitude').textContent = skateSpot.latitude;
+                document.getElementById('modalLongitude').textContent = skateSpot.longitude;
+                    
+                
+                const reviews = skateSpot.reviews;
+                const reviewCount = reviews.length;
+                let totalRating = 0;
+                reviews.forEach(review => {
+                    totalRating += review.rating;
+                });
+                const averageRating = reviewCount > 0 ? (totalRating / reviewCount).toFixed(1) : 0;
+
+                // Update the review count and average rating
+                const averageElement = document.querySelector('.totalCount .average');
+                const countElement = document.querySelector('.totalCount .count');
+                if (averageElement) {
+                    averageElement.textContent = `(${averageRating})`;
+                }
+                if (countElement) {
+                    countElement.textContent = `(${reviewCount})`;
+                }
+
+                // Update the star rating display
+                const starRatingElement = document.querySelector('.star-rating-total-count');
+                console.log("star rating element",starRatingElement);
+                const stars = starRatingElement.querySelectorAll('.fa');
+                reviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                stars.forEach((star, index) => {
+                    const starValue = index + 1;
+                    star.classList.remove('checked', 'half'); // Remove previous classes
+
+                    if (averageRating >= starValue) {
+                        star.classList.add('checked');
+                    } else if (averageRating >= starValue - 0.5) {
+                        star.classList.add('half');
+                    }
+                });
+
+                const reviewsContent = document.getElementById('reviewsContent');
+                reviewsContent.innerHTML = ''; // Clear existing reviews
+
+                if (Array.isArray(reviews) && reviews.length > 0) {
+                    reviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+                    reviews.forEach(review => {
+                        let starRatingHtml = '';
+                        for (let i = 1; i <= 5; i++) {
+                            starRatingHtml += `<span class="fa fa-star ${i <= review.rating ? 'checked' : ''}"></span>`;
+                        }
+                
+                        reviewsContent.innerHTML += `
+                        <div class="review">
+                            <hr>
+                            <div class="review-header d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center" onclick="seeUserProfile('${review.user.username}')" style = "cursor: pointer;">
+                                    <img src="${review.user.profile_picture ? '/storage/' + review.user.profile_picture : '/images/person.svg'}" class="review-profile-pic" alt="Profile Picture">
+                                    <span class="review-username">${review.user.username}</span>
+                                </div>
+                                <div class="userStarRating">
+                                    ${starRatingHtml}
+                                </div>
+                            </div>
+                            <p class="review-content">${review.content}</p>
+
+                            <p><small>${new Date(review.created_at).toLocaleDateString()}</small></p>
+                            <hr>
+                        </div>
+                    `;
+                    });
+                } else {
+                    reviewsContent.innerHTML = '<p>No reviews yet. Be the first to add one!</p>';
+                }
+
+
+                var myModal = new bootstrap.Modal(document.getElementById('skateSpotViewModal'));
+                myModal.show();
+
+
+            });
+        </script>
+
+        @include('layouts.skateModal', ['skateSpot' => $selectedSkateSpot])
+
+    @endif
+
+    <div class="modal fade" id="skateSpotModal" tabindex="-1" aria-labelledby="skateSpotModalLabel">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content"> 
                 <div class="modal-header">
                     <h5 class="modal-title" id="skateSpotModalLabel">Add Skate Spot Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -121,22 +253,19 @@
                         </div>
 
                         <!-- Hidden fields for latitude and longitude -->
-                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="latitude"    id="latitude">
                         <input type="hidden" name="longitude" id="longitude">
-                        <button type="submit" id="submit-skate-spot" class="btn btn-success">Save Skate Spot</button>
+                        <button type="submit" id="submit-skate-spot" class="btn btn-primary">Save Skate Spot</button>
                         <script src="{{ asset('js/imageVal.js') }}" defer></script>
-                        <script>
-                            // Pass skate spots data from PHP to JavaScript
-                                var skateSpots = @json($skateSpots);
-                        </script>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <script src="{{ asset('js/map.js') }}" defer></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkdtxqdCf-scid2G_zSmHhDDOMxkBznvk&callback=initMap"></script>
-
-<!-- Bootstrap JS -->
+    <script src="{{ asset('js/skateModal.js') }}" defer></script>
+    <script src="{{ asset('js/userProfile.js') }}" defer></script>
+    <script src="{{ asset('js/reviewModal.js') }}" defer></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkdtxqdCf-scid2G_zSmHhDDOMxkBznvk&callback=initMap&libraries=marker&map_ids=9228c432fa6bf187&loading=async"></script>
 </body>
 </html>

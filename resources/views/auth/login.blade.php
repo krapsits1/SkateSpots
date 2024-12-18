@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="shortcut icon" href="#" />
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -25,13 +27,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('skate-spots') ? 'active' : '' }}" href="/skate-spots">Skate spots</a>
+                    <a class="nav-link" href="/skate-spots">Skate spots</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('skateparks') ? 'active' : '' }}" href="/skateparks">Skateparks</a>
+                    <a class="nav-link" href="/skateparks">Skateparks</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
+                    <a class="nav-link " href="{{ route('login') }}">Login</a>
                 </li>
             </ul>
             </div>
@@ -56,7 +58,7 @@
             
                 <div class="mb-3">
                     <label for="login" class="form-label">Email or Username</label>
-                    <input id="login" type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login') }}" required autofocus>
+                    <input id="login" type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login') }}"autocomplete="username" required autofocus>
             
                     @error('login')
                         <span class="invalid-feedback" role="alert">
@@ -67,7 +69,7 @@
             
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="current-password"required>
             
                     @error('password')
                         <span class="invalid-feedback" role="alert">

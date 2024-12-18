@@ -36,6 +36,8 @@
                         @forelse($newSkateSpots as $skateSpot)
                             <tr                                 
                                 onclick="showModalskate(this)" 
+                                data-id="{{ $skateSpot->id }}"
+
                                 data-title="{{ $skateSpot->title }}" 
                                 data-description="{{ $skateSpot->description }}" 
                                 data-date="{{ $skateSpot->created_at->format('Y-m-d H:i')}}"
@@ -72,8 +74,12 @@
             </div>
         </div>
     </div>
-    @include('layouts.skateModal')
-    <script src="{{ asset('js/map.js') }}" defer></script>
+    @if($newSkateSpots->isNotEmpty())
+        @include('layouts.skateModal', ['selectedSkateSpot' => $selectedSkateSpot])
+    @endif
+    <script src="{{ asset('js/skateModal.js') }}" defer></script>
+    <script src="{{ asset('js/userProfile.js') }}" defer></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Bootstrap JS -->

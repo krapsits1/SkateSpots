@@ -1,4 +1,11 @@
-/* File: public/css/app.css */
+html {
+    min-width: 300px !important;
+}
+body{
+    touch-action: none; /* Disable all touch gestures */
+    overscroll-behavior: none;
+}
+
 #map {
     width: 100%;
     height: 550px;
@@ -11,6 +18,43 @@
     height: 300px; /* Set your desired height */
     object-fit: cover; /* Ensures the image covers the area */
 }
+
+.userProfileTable {
+    overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
+}
+.userProfileTable .table .profileTable-image{
+    width: 20%;
+}
+.userProfileTable .table {
+    width: 100%; /* Ensure the table takes up the full width of its container */
+    border-collapse: collapse; /* Ensure cells are neatly aligned */
+    border: 1px solid #ddd; /* Add a light border for better visibility */
+}
+
+.userProfileTable .table th,
+.userProfileTable .table td {
+    padding: 0.75rem; /* Add spacing for better readability */
+    text-align: left; /* Left-align text for a clean layout */
+    white-space: nowrap; /* Prevent text wrapping for table cells */
+    text-decoration: none;
+}
+
+.userProfileTable .table-responsive {
+    overflow-x: auto; /* Allow scrolling for smaller screens */
+}
+
+.userProfileTable img {
+    height: 130px; /* Set a fixed height */
+    object-fit: cover; /* Ensures the image fits within the specified dimensions without distortion */
+    border-radius: 10px; /* Rounded corners */
+}
+
+@media (min-width: 768px) {
+    .userProfileTable img {
+        height: 160px; /* Adjust this value as needed */
+    }
+}
+
 
 
 #popup-notification {
@@ -135,8 +179,16 @@
     }
 }
 
-.social-icons-container a:hover {
+.social-icons-container #instagramIcon:hover {
     background-color: rgba(251, 150, 150, 0.8); /* Semi-transparent white */
+}
+
+.social-icons-container #facebookIcon:hover {
+    background-color: rgba(14, 103, 255, 0.8); /* Semi-transparent white */
+}
+
+.social-icons-container #youtubeIcon:hover {
+    background-color: rgba(250, 24, 24, 0.8); /* Semi-transparent white */
 }
 
 .table-striped tr:hover{
@@ -144,3 +196,19 @@
     transition: background-color 0.2s ease-in-out;
 
 }
+
+.location {
+    font-size: 16px !important; /* Default font size */
+}
+
+@media (max-width: 500px) {
+    .date {
+        font-size: 10px !important; /* Smaller font size for smaller screens */
+    }
+    .location {
+        font-size: 12px !important; /* Smaller font size for smaller screens */
+    }
+}
+
+
+

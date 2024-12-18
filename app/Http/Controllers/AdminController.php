@@ -7,21 +7,24 @@ use App\Models\SkateSpot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-
 class AdminController extends Controller
-
 {
     public function showDashboard()
     {        
         $newSkateSpots = SkateSpot::where('status', 'pending')->get();
+        $selectedSkateSpot = $newSkateSpots->first(); // Select the first skate spot as the default
+        Log::alert('showDashboard SelectedSkateSpot from admin controller: ' . $selectedSkateSpot); 
 
-        return view('profile.admin.dashboard', compact('newSkateSpots'));
+        return view('profile.admin.dashboard', compact('newSkateSpots', 'selectedSkateSpot'));
     }
+
     // Method to display all users with an option to delete them
     public function showUsers()
     {
         $users = User::all();
-        return view('profile.admin.users', compact('users'));
+        $totalUsers = $users->count(); // Get the total count of users
+
+        return view('profile.admin.users', compact('users', 'totalUsers'));
     }
 
     // Method to delete a user
@@ -33,14 +36,14 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', 'User deleted successfully!');
     }
 
-    // In SkateSpot.php model
-
-
     // Method to display all skate spots
     public function showAllSkateSpots()
     {
-        $skateSpots = SkateSpot::with('images')->orderBy('created_at', 'desc')->get();
-        return view('profile.admin.skate_spots', compact('skateSpots'));
+        $skateSpots = SkateSpot::with(['images', 'user'])->orderBy('created_at', 'desc')->get();
+        $selectedSkateSpot = $skateSpots->first();
+        $totalSkateSpots = $skateSpots->count(); // Get the total count of skate spots
+
+        return view('profile.admin.skate_spots', compact('skateSpots', 'selectedSkateSpot', 'totalSkateSpots'));
     }
 
     // Method to display newly added skate spots for verification
@@ -71,9 +74,25 @@ class AdminController extends Controller
         if ($skateSpot) {
             $skateSpot->delete(); // Delete the skate spot if denied
 
-            return redirect()->route('admin.skateSpots')->with('success', 'Skate spot denied successfully.');
+            return redirect()->back()->with('success', 'Skate spot denied successfully.');
         }
 
-        return redirect()->route('admin.dashboard')->with('error', 'Skate spot not found.');
+        return redirect()->back()->with('error', 'Skate spot not found.');
+    }
+
+    // Method to get a specific skate spot
+    public function getSkateSpot($id)
+    {
+        $skateSpot = SkateSpot::with(['images', 'user', 'reviews.user'])->find($id);
+
+        if (!$skateSpot) {
+            return response()->json(['error' => 'Skate spot not found'], 404);
+        }
+
+        $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $skateSpot])->render();
+        return response()->json([
+            'skateSpot' => $skateSpot,
+            'modalHtml' => $modalHtml,
+        ]);
     }
 }

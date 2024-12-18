@@ -15,7 +15,16 @@ class HomeController extends Controller
     public function index()
     {
         // Fetch all skate spots from the database
-        $skateSpots = SkateSpot::all()->where('status', 'approved');
+        $skateSpots = SkateSpot::with(['images', 'user'])
+            ->where('status', 'approved')
+            ->get()
+            ->map(function($spot) {
+                $spot->date = $spot->created_at->format('Y-m-d H:i');
+                $spot->image_paths = $spot->images->map(function($image) {
+                    return asset('storage/' . $image->path); // Generate full URL for each image
+                });
+                return $spot;
+            });
 
         // Pass the skate spots to the home view
         return view('home', compact('skateSpots'));

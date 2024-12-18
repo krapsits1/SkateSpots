@@ -110,9 +110,9 @@
                 <input type="url" name="youtube_link" class="form-control" id="youtube_link" value="{{ old('youtube_link', $user->youtube_link) }}">
             </div>
 
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <a href="{{ route('profile.show') }}" class="btn btn-primary p-2">
-                Cancel
+            <button href="{{ route('profile.show', ['username' => Auth::user()->username]) }}" type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{{ route('profile.show', ['username' => Auth::user()->username]) }}" class="btn btn-primary p-2">
+                Go back
             </a>
         </form>
     </div>

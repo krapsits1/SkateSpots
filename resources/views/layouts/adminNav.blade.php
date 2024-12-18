@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <!-- Logo -->
-        <a class="navbar-brand" href="{{ route('welcome') }}">
+        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
             <img src="{{ asset('images/Logo2.svg') }}" alt="Logo" height="60" class="d-inline-block align-text-top">
         </a>
         <!-- Hamburger Menu (for mobile view) -->

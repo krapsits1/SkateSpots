@@ -14,7 +14,7 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        <h2 class = "pt-2">Users</h2>
+        <h2 class="pt-2">Users ({{ $totalUsers }})</h2>
         <div class="container" style="overflow-x:auto;">
             <div class="row">
                 <table class="table table-striped">
@@ -30,7 +30,7 @@
                     <tbody>
                         @forelse($users as $user)
                             <tr                                 
-                                onclick="seeUserProfile(this)" 
+                                onclick="seeUserProfile('{{ $user->username }}')" 
                                 data-username="{{ $user->username }}" 
                                 style="cursor: pointer;">
                                 
@@ -58,6 +58,6 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('js/map.js') }}" defer></script>
+    <script src="{{ asset('js/userProfile.js') }}" defer></script>
 </body>
 </html>

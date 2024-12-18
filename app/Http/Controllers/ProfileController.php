@@ -18,8 +18,10 @@ class ProfileController extends Controller
 
         }
         $skateSpots = $user->skateSpots; 
+        $skateSpotCount = $skateSpots->count();
 
-        return view('profile', compact('user', 'skateSpots')); 
+
+        return view('profile', compact('user', 'skateSpots', 'skateSpotCount')); 
     }
 
     public function edit()

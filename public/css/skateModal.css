@@ -1,0 +1,107 @@
+
+.skateModal-profile .skateModal-profile-pic{
+    background-color:rgb(242, 242, 242) ; 
+    height: 60px; 
+    width: 60px ;
+    border-radius:50%;
+    object-fit: cover;
+    
+}
+
+.skateModal-profile{
+    cursor: pointer;
+}
+
+
+.skateModal-profile h5{
+    padding-left: 15px;
+}
+
+/* stars for adding rating */
+/* stars for adding rating */
+.star-rating .fa {
+    font-size: 1.5rem;
+    color: #ccc; /* Default star color */
+    cursor: pointer;
+    position: relative;
+}
+
+.star-rating .fa.checked {
+    color: #ffcc00 !important; /* Highlighted star color */
+}
+
+.totalCount .fa {
+    font-size: 1.5rem;
+    color: #ccc; /* Default star color */
+    position: relative;
+}
+
+.totalCount .fa.checked {
+    color: #ffcc00 ; 
+}
+
+/* .fa-star-half::before {
+
+    color: #ffcc00 !important; 
+} */
+
+.totalCount .fa-star.half {
+    position: relative;  /* Enables positioning of pseudo-elements */
+    display: inline-block; /* Ensures proper layout behavior */
+    width: 1em;  /* Define width for the star (adjust as needed) */
+    height: 1em;
+    color: #ffcc00 ; 
+}
+
+.totalCount .fa-star.half::after {
+    content: '\f005'; /* Unicode for Font Awesome star */
+    position: absolute;
+    top: 0;
+    color: #ccc; /* Default star color */
+    clip-path: inset(0 0 0 50%); /* Clip to the right side */
+    z-index: 2;
+
+}
+
+.totalCount .fa-star.half::before {
+    content: '\f005'; /* Unicode for Font Awesome star */
+    color: #ffcc00 ; 
+    clip-path: inset(0 50% 0 0); /* Clip to the left side */
+    z-index: 1;
+
+}
+
+
+
+.review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensure space between elements */
+    padding: 0.5rem 0; /* Small padding */
+}
+
+.review-profile-pic {
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%; /* Make the image circular */
+    object-fit: cover;
+    margin-right: 0.5rem; /* Space between image and username */
+}
+
+.review-username {
+    font-weight: bold;
+    margin-right: auto; /* Push the username to the left */
+}
+
+.userStarRating {
+    padding-right: 0.5rem; /* Add small padding to the right */
+}
+
+.userStarRating .fa.fa-star {
+    font-size: 1.2rem; /* Make the star rating smaller */
+    color: #ccc; /* Default star color */
+}
+
+.userStarRating .fa.fa-star.checked {
+    color: #ffcc00; /* Highlighted star color */
+}
