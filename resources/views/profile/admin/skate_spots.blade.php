@@ -83,7 +83,6 @@
     <script src="{{ asset('js/skateModal.js') }}" defer></script>
     <script src="{{ asset('js/userProfile.js') }}" defer></script>
 
-    {{-- <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkdtxqdCf-scid2G_zSmHhDDOMxkBznvk&callback=initMap"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

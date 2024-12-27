@@ -5,6 +5,7 @@ use App\Models\SkateSpot; // Assuming you have a SkateSpot model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log; // Add this line
 use Illuminate\Support\Facades\Auth; // Ensure you import Auth
+use Illuminate\Support\Facades\Http;
 
 use App\Models\Review;
 
@@ -55,23 +56,53 @@ class SkateSpotController extends Controller
         $query = SkateSpot::with(['images', 'user', 'reviews'])
             ->withAvg('reviews', 'rating')
             ->orderByDesc('reviews_avg_rating');
-
-        if ($request->has('category') && $request->category != 'all') {
+    
+        // Filter by category if selected
+        if ($request->filled('category') && $request->category != 'all') {
             $query->where('category', $request->category);
         }
+    
+        // Search by location if provided
+        if ($request->filled('location')) {
 
-        // Search by location
-        if ($request->has('location')) {
-            $query->where('location', 'like', '%' . $request->location . '%');
+            Log::info("Location controller");
+
+
+            $response = Http::withHeaders([
+                'User-Agent' => 'SkateSpots (emilsvetra@email.com)'  // Set your app name and email
+            ])->get("https://nominatim.openstreetmap.org/search", [
+                'q' => $request->location,
+                'format' => 'json',
+                'limit' => 1,
+            ]);
+            
+    
+            Log::info("repsonse: $response");
+
+            $geoData = $response->json();
+    
+            if (!empty($geoData)) {
+                $latitude = $geoData[0]['lat'];
+                $longitude = $geoData[0]['lon'];
+                
+                Log::info("Geocoded location: $latitude, $longitude");
+                
+                // Apply a proximity filter (within 50km for example)
+                $query->whereRaw("
+                    ST_Distance_Sphere(
+                        point(longitude, latitude), 
+                        point(?, ?)
+                    ) < 50000", [$longitude, $latitude]);
+            }
         }
-
-        // Filter by rating
-        if ($request->has('rating')) {
+    
+        // Filter by rating if provided
+        if ($request->filled('rating')) {
             $query->having('reviews_avg_rating', '>=', $request->rating);
         }
-
+    
         $topSpots = $query->get(); // Adjust the number of top spots as needed
-
+    
         return view('topSpots', compact('topSpots'));
     }
 

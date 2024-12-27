@@ -61,7 +61,7 @@
         <!-- Sorting and Filtering Form -->
         <form method="GET" action="{{ route('topSpots') }}" class="mb-4">
             <div class="row">
-                <div class="col-md-3">
+                <div class=" p-2 col-md-3">
                     <label for="category" class="form-label">Category</label>
                     <select name="category" id="category" class="form-select">
                         <option value="all">All</option>
@@ -70,15 +70,15 @@
                         <option value="skate_shop">Skate Shop</option>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 p-2">
                     <label for="location" class="form-label">Location</label>
                     <input type="text" name="location" id="location" class="form-control" placeholder="Enter location">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 p-2">
                     <label for="rating" class="form-label">Minimum Rating</label>
                     <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" step="0.1" placeholder="Enter rating">
                 </div>
-                <div class="col-md-3 d-flex align-items-end">
+                <div class="col-md-3 p-2 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary w-100">Filter</button>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                     <tbody>
                         @forelse($topSpots as $spot)
                             <tr data-id="{{$spot->id}}" >
-                                <td class="rank text-center align-middle"><strong>{{ $loop->iteration }}</strong></td>
+                                <td  class="rank text-center align-middle"><strong>{{ $loop->iteration }}</strong></td>
                                 <td class="rank text-center align-middle">
                                     @if($spot->images->isNotEmpty())
                                         <img src="{{ asset('storage/' . $spot->images->first()->path) }}"  alt="{{ $spot->title }}" style="width: 200px; height: 200px;">
@@ -107,7 +107,9 @@
                                         <p>No image available.</p>
                                     @endif
                                 </td>
-                                <td class="rank text-center align-middle">{{ $spot->title }}</td>
+                                <td class="rank text-center align-middle">
+                                    <a href="{{ url('home/skate-spot/' . $spot->id) }}">{{ $spot->title }}</a>
+                                </td>
                                 <td class="rank text-center align-middle">
                                     
                                     <div class="userStarRating d-flex">
