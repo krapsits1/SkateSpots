@@ -38,14 +38,18 @@
             </div>
         </div>
     </nav>
-    <h1>Welcome to My Website</h1>
+    <div class="my-3 p-2 text-center mx-auto" style="max-width: 80%;">
+        <h1>
+            Discover and Share the Best Skate Spots
+        </h1>
+        <p>Explore local skateparks, street spots, and hidden gems.</p>    
+    </div>
     <div class="d-flex justify-content-center align-items-center p-3">
-        <!-- If the user is not authenticated, redirect them to the login page -->
+    <!-- If the user is not authenticated, redirect them to the login page -->
         <a href="{{ route('login') }}" class="btn btn-primary p-2" id="add-skate-spot">
             Add Skate Spot
         </a>
     </div>
-    
 
     <div id="map"></div>
     <script>
