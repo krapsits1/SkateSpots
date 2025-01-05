@@ -5,16 +5,49 @@ let marker;
 window.initMap = function() {
     
     const initialLocation = { lat: 56.9, lng: 24.1 }; 
-
+    
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
         center: initialLocation,
-        mapId: '9228c432fa6bf187'
+        mapId: window.MAP_ID 
     });
 
     loadSkateSpots();
 
-    // Add click event to map for placing the marker
+    const input = document.getElementById('searchBox');
+
+    const searchBox = new google.maps.places.SearchBox(input);
+
+    map.addListener('bounds_changed', () => {
+        searchBox.setBounds(map.getBounds());
+    });
+
+    searchBox.addListener('places_changed', () => {
+        const places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
+        }
+
+
+        const bounds = new google.maps.LatLngBounds();
+        places.forEach((place) => {
+            if (!place.geometry || !place.geometry.location) {
+                console.log('Returned place contains no geometry');
+                return;
+            }
+
+            bounds.extend(place.geometry.location);
+        });
+        map.fitBounds(bounds); 
+        const listener = google.maps.event.addListener(map, 'bounds_changed', function() {
+            if (map.getZoom() > 15) { 
+                map.setZoom(15);
+            }
+            google.maps.event.removeListener(listener);
+        });    
+    });
+
     map.addListener('click', function(event) {
         if (map.get('draggableCursor') === 'crosshair') { // Only allow marker placement if cursor is crosshair
             placeMarker(event.latLng);
@@ -26,10 +59,9 @@ window.initMap = function() {
     
 };
 
-// Function to place or update the marker
 function placeMarker(location) {
     if (marker) {
-        marker.setPosition(location); // Update marker position if it already exists
+        marker.setPosition(location); 
     } else {
         marker = new google.maps.marker.AdvancedMarkerElement({
             position: location,
@@ -37,47 +69,43 @@ function placeMarker(location) {
         });
     }
 
-    // Set latitude and longitude in the form inputs
     document.getElementById('latitude').value = location.lat();
     document.getElementById('longitude').value = location.lng();
 
-        // Log the value
 }
 
-// Function to reset the map cursor back to default
 function resetCursor() {
     map.setOptions({ draggableCursor: null });  
 }
 
-// Function to show the Bootstrap modal
 function showModal() {
     const skateSpotModal = new bootstrap.Modal(document.getElementById('skateSpotModal'));
         skateSpotModal.show();
-    // Ensure latitude and longitude are set
-
 }
-// Cache DOM elements for better performance
+
+
 const addSkateSpotButton = document.getElementById('add-skate-spot');
 const notification = document.getElementById('popup-notification');
 
-// Handle "Add Skate Spot" button click
-addSkateSpotButton.addEventListener('click', function() {
-    // Change the map cursor to crosshair
-    map.setOptions({ draggableCursor: 'crosshair' });
+if (isAuthenticated && addSkateSpotButton) {
+    addSkateSpotButton.addEventListener('click', function() {
 
-    // Show the pop-up notification
-    notification.style.display = 'block';
-    notification.style.opacity = '1';
+        map.setOptions({ draggableCursor: 'crosshair' });
 
-    // Hide the notification after 2 seconds
-    setTimeout(function() {
-        notification.style.opacity = '0';
+        // Show the pop-up notification
+        notification.style.display = 'block';
+        notification.style.opacity = '1';
+
+        // Hide the notification after 2 seconds
         setTimeout(function() {
-            notification.style.display = 'none';
-        }, 500); // Wait for opacity transition to complete
-    }, 2000); // Show for 2 seconds
+            notification.style.opacity = '0';
+            setTimeout(function() {
+                notification.style.display = 'none';
+            }, 500); 
+        }, 2000); 
 
-});
+    });
+}
 
 function updateHistoryState(spotId) {
     history.pushState({ spotId: spotId }, '', getFetchUrl(spotId));

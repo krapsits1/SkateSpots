@@ -17,9 +17,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ route('welcome') }}">
+            <a class="navbar-brand" href="{{ Auth::check() ? route('home') : route('welcome') }}">
                 <img src="{{ asset('images/Logo2.svg') }}" alt="Logo" height="60" class="d-inline-block align-text-top">
-            </a>
+            </a>            
             <!-- Hamburger Menu (for mobile view) -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

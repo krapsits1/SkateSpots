@@ -2,7 +2,7 @@
 <html lang="en">
 @include('layouts.head')
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg  border navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand" href="{{ route('welcome') }}">
@@ -38,24 +38,26 @@
             </div>
         </div>
     </nav>
-    <div class="my-3 p-2 text-center mx-auto" style="max-width: 80%;">
+    <div class="m-3 text-center mx-auto" style="max-width: 80%;">
         <h1>
             Discover and Share the Best Skate Spots
         </h1>
         <p>Explore local skateparks, street spots, and hidden gems.</p>    
     </div>
-    <div class="d-flex justify-content-center align-items-center p-3">
+    <div class="pb-2 d-flex justify-content-center align-items-center">
     <!-- If the user is not authenticated, redirect them to the login page -->
-        <a href="{{ route('login') }}" class="btn btn-primary p-2" id="add-skate-spot">
+        <a href="{{ route('login') }}" class="btn btn-primary" id="add-skate-spot">
             Add Skate Spot
         </a>
     </div>
-
+    <div class="text-center">
+        <input id="searchBox" type="text" class="form-control mx-auto" placeholder="Enter a location" style="width: 60%; margin-bottom: 10px;">
+    </div>
     <div id="map"></div>
     <script>
-        // // Pass skate spots data from the server to the JavaScript
+        const isAuthenticated = @json(Auth::check());
         var skateSpots = @json($skateSpots);
-        // console.log(skateSpots);
+        window.MAP_ID = "{{ env('GOOGLE_MAPS_IDS') }}";
     </script>
 
 
@@ -183,6 +185,6 @@
     <script src="{{ asset('js/skateModal.js') }}" defer></script>
     <script src="{{ asset('js/userProfile.js') }}" defer></script>
     <script src="{{ asset('js/reviewModal.js') }}" defer></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap&libraries=marker&map_ids={{ env('GOOGLE_MAPS_IDS') }}&loading=async"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap&libraries=places,marker&map_ids={{ env('GOOGLE_MAPS_IDS') }}&loading=async"></script>
 </body>
 </html>

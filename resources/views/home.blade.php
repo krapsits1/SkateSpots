@@ -61,18 +61,23 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
-    <h1>Welcome, {{ Auth::user()->username }}!</h1>
+    <div class = "ms-3">
+        <h3>Welcome, {{ Auth::user()->username }}!</h3>
+    </div>
     <div class="d-flex justify-content-center align-items-center my-4">
         <button id="add-skate-spot" class="btn btn-primary p-2">Add Skate Spot</button>
     </div>
     <div id="popup-notification" class="alert alert-info text-center" role="alert" style="display: none;">
         Drop marker in map to add a skate spot.
-    </div>      
+    </div> 
+    <div class="text-center">
+        <input id="searchBox" type="text" class="form-control mx-auto" placeholder="Enter a location" style="width: 60%; margin-bottom: 10px;">
+    </div>     
     <div id="map">
         <script>
-            // Pass skate spots data from PHP to JavaScript
-                var skateSpots = @json($skateSpots);
+            const isAuthenticated = @json(Auth::check());
+            var skateSpots = @json($skateSpots);
+            window.MAP_ID = "{{ env('GOOGLE_MAPS_IDS') }}";
         </script>
     </div>
  
@@ -266,6 +271,6 @@
     <script src="{{ asset('js/skateModal.js') }}" defer></script>
     <script src="{{ asset('js/userProfile.js') }}" defer></script>
     <script src="{{ asset('js/reviewModal.js') }}" defer></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap&libraries=marker&map_ids={{ env('GOOGLE_MAPS_IDS') }}&loading=async"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap&libraries=places,marker&map_ids={{ env('GOOGLE_MAPS_IDS') }}&loading=async"></script>
 </body>
 </html>
