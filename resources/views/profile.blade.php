@@ -13,10 +13,10 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar border navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
-            <a class="navbar-brand" href="{{ route('welcome') }}">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('images/Logo2.svg') }}" alt="Logo" height="60" class="d-inline-block align-text-top">
             </a>
             <!-- Hamburger Menu (for mobile view) -->
@@ -28,10 +28,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">Home</a>
+                    <a class="nav-link" href="/top-spots">Top Spots</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/top-spots">Top Spots</a>
+                    <a class="nav-link" href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
                     @auth

@@ -14,7 +14,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar border navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand" href="{{ Auth::check() ? route('home') : route('welcome') }}">

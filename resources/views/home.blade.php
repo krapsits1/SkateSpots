@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg border navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand" href="{{ route('home') }}">
@@ -47,7 +47,7 @@
                     @endauth
                 
                     @guest
-                        <a class="nav-link {{ Request::is('login') ? 'active' : '' }}" href="{{ route('login') }}" style="border: none; background: none; color: rgb(9, 89, 250);">Login</a>
+                        <a class="nav-link" href="{{ route('login') }}" style="border: none; background: none; color: rgb(9, 89, 250);">Login</a>
                     @endguest
                 </li>  
             </ul>
@@ -61,7 +61,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    <div class = "ms-3">
+    <div class = "pt-2 ms-3">
         <h3>Welcome, {{ Auth::user()->username }}!</h3>
     </div>
     <div class="d-flex justify-content-center align-items-center my-4">

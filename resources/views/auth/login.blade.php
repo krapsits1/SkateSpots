@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg border navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
             <a class="navbar-brand" href="{{ route('welcome') }}">
@@ -27,13 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/skate-spots">Skate spots</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/skateparks">Skateparks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{ route('login') }}">Login</a>
+                    <a class="nav-link" href="{{ route('login') }}" style="border: none; background: none; color: rgb(9, 89, 250);">Login</a>
                 </li>
             </ul>
             </div>
