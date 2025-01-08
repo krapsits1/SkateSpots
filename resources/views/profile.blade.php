@@ -87,6 +87,16 @@
             @endif
         </div>
     </div>
+    @if($user->id == Auth::id())    
+        </div>
+            <!-- You can add skate-spots content here -->
+            <div class="container p-4">
+                <a href="{{ route('profile.edit') }}" class="btn btn-primary p-2 me-2">
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+    @endif
     <div class="container p-4">
         <h5>Bio:</h5>
         @if ($user->bio)
@@ -98,71 +108,55 @@
     <div class="container px-4">
         <h5>Skate Spots: {{ $skateSpotCount }}</h5>
     </div>
-        <div class  = "userProfileTable d-flex justify-content-center" >
-        <div class="container p-4">
-            
-            @if($skateSpots->isEmpty())
-                <p>No skate spots has been added.</p>
-            @else
-                <div class="table-responsive">
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Images</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($skateSpots as $skateSpot)
-                            <tr>
-                                <td><a style="text-decoration: none;" href="{{ url('home/skate-spot/' . $skateSpot->id) }}">
-                                    {{ $skateSpot->title }}
-                                </a></td>
-                                <td>{{ $skateSpot->category }}</td>
-                                <td>
-                                    @if($skateSpot->images->isNotEmpty())
-                                    <img src="{{ asset('storage/' . $skateSpot->images->first()->path) }}" alt="{{ $skateSpot->title }}">
-                                @else
+    <div id="profilePosts">
+        <div class="container px-4">
+            <div class="row g-2">
+                @foreach($skateSpots as $skateSpot)
+                    <div class="col-4">
+                        <div class="post">
+                            @if($skateSpot->images->isNotEmpty())
+                                <div class="image-container">
+                                    <a onclick="showModalskate(this)" data-id="{{ $skateSpot->id }}">
+                                        <img src="{{ asset('storage/' . $skateSpot->images->first()->path) }}" alt="{{ $skateSpot->title }}" class="img-fluid">
+                                    </a>
+                                </div>
+                            @else
+                                <div class="image-container">
                                     <p>No image available.</p>
-                                @endif
-                                </td>
-                                <td>{{ $skateSpot->description }}</td>
-                                <td>{{ $skateSpot->status }}</td>
-                                @if($user->id == Auth::id())
-                                    <td>
-                                        <form action="{{ route('skateSpots.destroy', $skateSpot->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this skate spot?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <td colspan="6"></td>
-                            </tr>
-                            
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </div>
-    </div>
-    @if($user->id == Auth::id())    
-        </div>
-            <!-- You can add skate-spots content here -->
-            <div class="container p-4">
-                <a href="{{ route('profile.edit') }}" class="btn btn-primary p-2 me-2">
-                    Edit Profile
-                </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
-    @endif
+    </div>
+    {{-- <style>
+        .image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* 1:1 Aspect Ratio */
+            overflow: hidden;
+        }
     
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the container */
+        }
+    
+        .image-container p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+        }
+    </style> --}}
+    <script src="{{ asset('js/skateModal.js') }}" defer></script>
+
 </body>
 </html>
