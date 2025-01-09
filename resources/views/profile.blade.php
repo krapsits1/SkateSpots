@@ -3,14 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="shortcut icon" href="#" />
-
+    @include('layouts.head')
 </head>
 <body>
     <nav class="navbar border navbar-expand-lg navbar-light bg-light">
@@ -116,7 +109,7 @@
                         <div class="post">
                             @if($skateSpot->images->isNotEmpty())
                                 <div class="image-container">
-                                    <a onclick="showModalskate(this)" data-id="{{ $skateSpot->id }}">
+                                    <a onclick="showModalSkatePost(this)" data-id="{{ $skateSpot->id }}">
                                         <img src="{{ asset('storage/' . $skateSpot->images->first()->path) }}" alt="{{ $skateSpot->title }}" class="img-fluid">
                                     </a>
                                 </div>
@@ -131,31 +124,9 @@
             </div>
         </div>
     </div>
-    {{-- <style>
-        .image-container {
-            position: relative;
-            width: 100%;
-            padding-top: 100%; /* 1:1 Aspect Ratio */
-            overflow: hidden;
-        }
-    
-        .image-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures the image covers the container */
-        }
-    
-        .image-container p {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-        }
-    </style> --}}
+    @include('layouts.skateModal', ['selectedSkateSpot' => $selectedSkateSpot])
+    <script src="{{ asset('js/userProfile.js') }}" defer></script>
+    <script src="{{ asset('js/reviewModal.js') }}" defer></script>
     <script src="{{ asset('js/skateModal.js') }}" defer></script>
 
 </body>

@@ -141,6 +141,7 @@ function loadSkateSpots() {
                 myModal.show();
 
 
+
                 updateHistoryState(spot.id);
 
                 // Add event listener for when the modal is hidden

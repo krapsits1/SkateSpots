@@ -148,7 +148,7 @@ class SkateSpotController extends Controller
 
     protected function handleAjaxRequest($id)
     {
-        Log::info('Handling AJAX request for skate spot ID: ' . $id);
+        Log::info('Burrr Handling AJAX request for skate spot ID: ' . $id);
 
         
 
@@ -172,7 +172,7 @@ class SkateSpotController extends Controller
 
     protected function handleStandardRequest($id)
     {
-        Log::info('Handling standard request for skate spot ID: ' . $id);
+        Log::info('burrrr Handling standard request for skate spot ID: ' . $id);
 
         $allSkateSpots = SkateSpot::with(['images', 'user'])
             ->where('status', 'approved')
@@ -207,6 +207,21 @@ class SkateSpotController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Review added successfully!');
+    }
+
+    public function showSkateModalForPost($id)
+    {
+        $skateSpot = SkateSpot::with(['images', 'user', 'reviews.user'])->find($id);
+
+        if (!$skateSpot) {
+            return response()->json(['error' => 'Skate spot not found'], 404);
+        }
+
+        $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $skateSpot])->render();
+        return response()->json([
+            'skateSpot' => $skateSpot,
+            'modalHtml' => $modalHtml,
+        ]);
     }
 
 
