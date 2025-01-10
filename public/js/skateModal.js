@@ -227,7 +227,7 @@ function showModalSkatePost(row) {
                 reviewsContent.innerHTML = '<p>No reviews yet. Be the first to add one!</p>';
             }
 
-            var myModal = new bootstrap.Modal(document.getElementById('skateSpotViewModal'));
+            var myModal = new bootstrap.Modal(document.getElementById('userProfileSkateModal'));
             myModal.show();
 
             // document.querySelector('body').setAttribute('inert', 'true');

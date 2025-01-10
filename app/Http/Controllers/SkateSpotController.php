@@ -126,12 +126,18 @@ class SkateSpotController extends Controller
     
     public function destroy($id)
     {
+        Log::info('Destroying skate spot ID: ' . $id);
         $skateSpot = SkateSpot::findOrFail($id);
 
         // Check if the authenticated user is the owner of the skate spot
         if ($skateSpot->user_id === Auth::id()) {
             $skateSpot->delete();
+            Log::info('Skate spot deleted successfully');
             return redirect()->back()->with('success', 'Skate spot deleted successfully.');
+        }else{
+            Log::info('kaut kas nesagaaja ' . "spot id : " . $id);
+            Log::info('kaut kas nesagaaja ' . "user id : " . Auth::id());
+
         }
 
         return redirect()->back()->with('error', 'You are not authorized to delete this skate spot.');
@@ -150,7 +156,6 @@ class SkateSpotController extends Controller
     {
         Log::info('Burrr Handling AJAX request for skate spot ID: ' . $id);
 
-        
 
         $skateSpot = SkateSpot::with(['images', 'user','reviews.user'])
             ->where('status', 'approved')
@@ -166,7 +171,7 @@ class SkateSpotController extends Controller
         $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $skateSpot])->render();
         return response()->json([
             'skateSpot' => $skateSpot,
-            'modalHtml' => $modalHtml,
+            'modalHtml' => $modalHtml
         ]);
     }
 

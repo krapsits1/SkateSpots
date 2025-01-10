@@ -124,7 +124,11 @@
             </div>
         </div>
     </div>
-    @include('layouts.skateModal', ['selectedSkateSpot' => $selectedSkateSpot])
+    {{-- @if($selectedSkateSpot)
+        @include('layouts.userProfileSkateModal',['skateSpots' => $skateSpots], ['selectedSkateSpot' => $selectedSkateSpot])
+    @endif --}}
+    @include('layouts.userProfileSkateModal')
+
     <script src="{{ asset('js/userProfile.js') }}" defer></script>
     <script src="{{ asset('js/reviewModal.js') }}" defer></script>
     <script src="{{ asset('js/skateModal.js') }}" defer></script>

@@ -60,10 +60,9 @@
         window.MAP_ID = "{{ env('GOOGLE_MAPS_IDS') }}";
     </script>
 
-
+    {{-- strandarta request --}}
     {{-- Šis ir vajdzīgs lai parādās skateModal, ja user ievada url ar skateSpot --}}
     @if(isset($selectedSkateSpot))
-        {{-- @include('layouts.skateModal', ['skateSpot' => $selectedSkateSpot]) --}}
 
         <script>
             const isAuthenticated = @json(Auth::check());
