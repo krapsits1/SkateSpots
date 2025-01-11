@@ -134,12 +134,7 @@ class SkateSpotController extends Controller
             $skateSpot->delete();
             Log::info('Skate spot deleted successfully');
             return redirect()->back()->with('success', 'Skate spot deleted successfully.');
-        }else{
-            Log::info('kaut kas nesagaaja ' . "spot id : " . $id);
-            Log::info('kaut kas nesagaaja ' . "user id : " . Auth::id());
-
         }
-
         return redirect()->back()->with('error', 'You are not authorized to delete this skate spot.');
     }
 

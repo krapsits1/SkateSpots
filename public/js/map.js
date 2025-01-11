@@ -128,7 +128,7 @@ function loadSkateSpots() {
         });
 
         marker.addListener('click', function() {
-            fetch(getFetchUrl(spot.id), {
+            fetch(`/skate-spot/${spot.id}`, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
             .then(response => response.json())

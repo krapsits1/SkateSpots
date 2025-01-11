@@ -1,4 +1,3 @@
-<!-- filepath: /c:/Users/emils/Herd/SkateSpots/resources/views/layouts/userProfileSkateModal.blade.php -->
 <div class="modal fade" id="userProfileSkateModal" tabindex="-1" aria-labelledby="userProfileSkateModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -78,11 +77,12 @@
             </div>
             <div class="modal-footer">
                 @if(Auth::check() && Auth::id() == $skateSpot->user_id)
-                <form action="{{ route('skateSpots.destroy', $skateSpot->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this skate spot?')">
+                <form id="deleteSkateSpotForm" method="POST" onsubmit="return confirm('Are you sure you want to delete this skate spot?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
-                </form>                @endif
+                </form>
+                @endif          
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

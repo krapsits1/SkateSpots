@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/skate-spot/{id}', [SkateSpotController::class, 'show'])->name('skate-spot.show');
 Route::get('home/skate-spot/{id}', [SkateSpotController::class, 'show'])->name('skate-spot.home.show');
-Route::get('home/skate-spot/post/{id}', [SkateSpotController::class, 'showSkateModalForPost'])->name('skate-spot.home.showSkateModalForPost');
+// Route::get('home/skate-spot/post/{id}', [SkateSpotController::class, 'showSkateModalForPost'])->name('skate-spot.home.showSkateModalForPost');
 
 Route::delete('/skate-spots/{id}', [SkateSpotController::class, 'destroy'])->name('skateSpots.destroy');
 

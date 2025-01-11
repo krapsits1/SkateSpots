@@ -65,7 +65,7 @@
     @if(isset($selectedSkateSpot))
 
         <script>
-            const isAuthenticated = @json(Auth::check());
+            //const isAuthenticated = @json(Auth::check());
 
             document.addEventListener('DOMContentLoaded', function () {
 

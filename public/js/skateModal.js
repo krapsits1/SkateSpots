@@ -2,7 +2,7 @@ function showModalskate(row) {
     console.log("row",row);
     const skateSpotId = row.getAttribute('data-id');
     console.log(skateSpotId);
-    fetch(`/admin/skate-spot/${skateSpotId}`) ///admin/skate-spot/${skateSpotId}
+    fetch(`/skate-spot/${skateSpotId}`) ///admin/skate-spot/${skateSpotId}
         .then(response => response.json())
         .then(data => {
             console.log("bURRRRRRRRRRRR");
@@ -129,7 +129,7 @@ function copyCoordinatesToClipboard() {
 
 function showModalSkatePost(row) {
     const skateSpotId = row.getAttribute('data-id');
-    fetch(`/home/skate-spot/post/${skateSpotId}`) ///admin/skate-spot/${skateSpotId}
+    fetch(`/skate-spot/${skateSpotId}`) ///admin/skate-spot/${skateSpotId}
         .then(response => response.json())
         .then(data => {
             document.getElementById('username').textContent = data.skateSpot.user.username;
@@ -226,6 +226,9 @@ function showModalSkatePost(row) {
             } else {
                 reviewsContent.innerHTML = '<p>No reviews yet. Be the first to add one!</p>';
             }
+
+            const deleteForm = document.getElementById('deleteSkateSpotForm');
+            deleteForm.action = `/skateSpots/${skateSpotId}`;
 
             var myModal = new bootstrap.Modal(document.getElementById('userProfileSkateModal'));
             myModal.show();
