@@ -1,10 +1,10 @@
-function seeUserProfile(name){
+// function seeUserProfile(name){
    
    
-    // const username = name.getAttribute('data-username');
+//     // const username = name.getAttribute('data-username');
 
-    window.location.href = `/profile/${name}`;
-}
+//     window.location.href = `/profile/${name}`;
+// }
 
 
 

@@ -97,12 +97,14 @@ if (isAuthenticated && addSkateSpotButton) {
         notification.style.opacity = '1';
 
         // Hide the notification after 2 seconds
-        setTimeout(function() {
-            notification.style.opacity = '0';
-            setTimeout(function() {
-                notification.style.display = 'none';
-            }, 500); 
-        }, 2000); 
+        // setTimeout(() => {
+        //     notification.style.opacity = '0';
+            
+        //     setTimeout(() => {
+        //         notification.style.display = 'none';
+        //     }, 500); // Inner timeout for further delay
+        // }, 2000);
+
 
     });
 }
@@ -128,21 +130,19 @@ function loadSkateSpots() {
         });
 
         marker.addListener('click', function() {
+            updateHistoryState(spot.id);
+
             fetch(`/skate-spot/${spot.id}`, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
             .then(response => response.json())
             .then(data => {
-                // Insert modal HTML into the DOM
-                document.body.insertAdjacentHTML('beforeend', data.modalHtml);
 
+                document.body.insertAdjacentHTML('beforeend', data.modalHtml);
 
                 var myModal = new bootstrap.Modal(document.getElementById('skateSpotViewModal'));
                 myModal.show();
 
-
-
-                updateHistoryState(spot.id);
 
                 // Add event listener for when the modal is hidden
                 document.getElementById('skateSpotViewModal').addEventListener('hidden.bs.modal', handleModalClose);
@@ -173,6 +173,7 @@ function loadSkateSpots() {
                 document.getElementById('modalLongitude').textContent = data.skateSpot.longitude;
 
                 const reviews = data.skateSpot.reviews;
+                console.log(reviews);
                 const reviewCount = reviews.length;
                 let totalRating = 0;
                 reviews.forEach(review => {
@@ -277,6 +278,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+function copyCoordinatesToClipboard() {
+    const latitudeText = document.getElementById('modalLatitude').innerText;
+    const longitudeText = document.getElementById('modalLongitude').innerText;
+
+    // Combine the coordinates into a single string
+    const coordinates = `${latitudeText}, ${longitudeText}`;
+
+    // Use the Clipboard API to copy the coordinates to clipboard
+    navigator.clipboard.writeText(coordinates)
+        .then(() => {
+            alert("Coordinates copied to clipboard!");
+        })
+        .catch(err => {
+            console.error("Failed to copy text: ", err);
+        });
+}
 
 
 function seeUserProfile(row){

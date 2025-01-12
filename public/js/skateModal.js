@@ -129,7 +129,10 @@ function copyCoordinatesToClipboard() {
 
 function showModalSkatePost(row) {
     const skateSpotId = row.getAttribute('data-id');
-    fetch(`/skate-spot/${skateSpotId}`) ///admin/skate-spot/${skateSpotId}
+    console.log(skateSpotId);
+    fetch(`/skate-spot/${skateSpotId}`,{
+            headers: {'X-Requested-With': 'XMLHtppRequest'}
+        }) 
         .then(response => response.json())
         .then(data => {
             document.getElementById('username').textContent = data.skateSpot.user.username;

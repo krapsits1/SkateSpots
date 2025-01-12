@@ -143,50 +143,68 @@ class SkateSpotController extends Controller
         if (request()->ajax()) {
             return $this->handleAjaxRequest($id);
         }
-
         return $this->handleStandardRequest($id);
     }
 
-    protected function handleAjaxRequest($id)
+    protected function prepareSkateSpotData($skateSpot)
     {
-        Log::info('Burrr Handling AJAX request for skate spot ID: ' . $id);
+        $skateSpotData = $skateSpot->only(['title', 'created_at', 'latitude', 'longitude', 'description']);
+        $skateSpotData['user'] = $skateSpot->user->only(['username', 'profile_picture']);
+        $skateSpotData['reviews'] = $skateSpot->reviews->map(function($review) {
+            return [
+                'rating' => $review->rating,
+                'content' => $review->content,
+                'created_at' => $review->created_at,
+                'user' => $review->user->only(['username', 'profile_picture'])
+            ];
+        });
+        $skateSpotData['images'] = $skateSpot->images->map(function($image) {
+            return $image->only(['path']);
+        });
 
-
-        $skateSpot = SkateSpot::with(['images', 'user','reviews.user'])
-            ->where('status', 'approved')
-            ->find($id);
-
-        if (!$skateSpot) {
-            return response()->json(['error' => 'Skate spot not found'], 404);
-        }
-
-        // $skateSpot->load('reviews');
-
-
-        $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $skateSpot])->render();
-        return response()->json([
-            'skateSpot' => $skateSpot,
-            'modalHtml' => $modalHtml
-        ]);
+        return $skateSpotData;
     }
+
+    public function handleAjaxRequest($id)
+    {
+        Log::info('Handling AJAX request for skate spot ID: ' . $id);
+
+        $skateSpot = SkateSpot::with(['user' => function($query) {
+            $query->select('id', 'username', 'profile_picture');
+        }, 'reviews.user' => function($query) {
+            $query->select('id', 'username', 'profile_picture');
+        }, 'images'])->findOrFail($id);
+    
+        $skateSpotData = $this->prepareSkateSpotData($skateSpot);
+    
+        $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $skateSpot])->render();
+    
+        return response()->json(['skateSpot' => $skateSpotData, 'modalHtml' => $modalHtml]);
+    }
+
 
     protected function handleStandardRequest($id)
     {
-        Log::info('burrrr Handling standard request for skate spot ID: ' . $id);
-
+        Log::info('Handling standard request for skate spot ID: ' . $id);
+    
         $allSkateSpots = SkateSpot::with(['images', 'user'])
             ->where('status', 'approved')
             ->get();
-
-        $selectedSkateSpot = SkateSpot::with(['images', 'user','reviews.user'])->find($id);
-
+    
+        $selectedSkateSpot = SkateSpot::with(['images', 'user', 'reviews.user'])->find($id);
+    
         if (!$selectedSkateSpot) {
             abort(404, 'Skate spot not found');
         }
-
+    
+        $skateSpotData = $this->prepareSkateSpotData($selectedSkateSpot);
+    
+        $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $selectedSkateSpot])->render();
+    
         return view(Auth::check() ? 'home' : 'welcome', [
             'skateSpots' => $allSkateSpots,
-            'selectedSkateSpot' => $selectedSkateSpot
+            'selectedSkateSpot' => $selectedSkateSpot, // Pass the object instead of the array
+            'modalHtml' => $modalHtml
         ]);
     }
 
@@ -209,20 +227,20 @@ class SkateSpotController extends Controller
         return redirect()->back()->with('success', 'Review added successfully!');
     }
 
-    public function showSkateModalForPost($id)
-    {
-        $skateSpot = SkateSpot::with(['images', 'user', 'reviews.user'])->find($id);
+    // public function showSkateModalForPost($id)
+    // {
+    //     $skateSpot = SkateSpot::with(['images', 'user', 'reviews.user'])->find($id);
 
-        if (!$skateSpot) {
-            return response()->json(['error' => 'Skate spot not found'], 404);
-        }
+    //     if (!$skateSpot) {
+    //         return response()->json(['error' => 'Skate spot not found'], 404);
+    //     }
 
-        $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $skateSpot])->render();
-        return response()->json([
-            'skateSpot' => $skateSpot,
-            'modalHtml' => $modalHtml,
-        ]);
-    }
+    //     $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $skateSpot])->render();
+    //     return response()->json([
+    //         'skateSpot' => $skateSpot,
+    //         'modalHtml' => $modalHtml,
+    //     ]);
+    // }
 
 
     
