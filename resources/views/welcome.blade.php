@@ -68,14 +68,13 @@
             document.addEventListener('DOMContentLoaded', function () {
 
                 const skateSpot = @json($selectedSkateSpot);
-
+                console.log(skateSpot);
                 
                 console.log("WELCEME PAGE");            
                 const carouselInner = document.querySelector('#carouselExampleControls .carousel-inner');
                 carouselInner.innerHTML = ''; // Clear existing items
                 
                 skateSpot.images.forEach((image, index) => {
-                    console.log(image);
 
                     const activeClass = index === 0 ? 'active' : '';
 

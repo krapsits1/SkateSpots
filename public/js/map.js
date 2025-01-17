@@ -128,9 +128,8 @@ function loadSkateSpots() {
             map: map,
             title: spot.title,
         });
-
+        
         marker.addListener('click', function() {
-            updateHistoryState(spot.id);
 
             fetch(`/skate-spot/${spot.id}`, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -245,6 +244,7 @@ function loadSkateSpots() {
 
 
                 // Update history state
+                updateHistoryState(data.skateSpot.id);
                   
                     
                 

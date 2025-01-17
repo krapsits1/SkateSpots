@@ -87,14 +87,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-{{--                 
-                @if(auth()->user()->id == $selectedSkateSpot->user_id)    
-                    <button type="button" class="btn btn-danger" onclick="deleteSkateSpot()">Delete</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-                @elseif(auth()->user()->id =="undefined")
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                @endif --}}
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

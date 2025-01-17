@@ -14,8 +14,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Fetch all skate spots from the database
-        $skateSpots = SkateSpot::with(['images', 'user'])
+        //vajag tikai skate spot ids un location
+         $skateSpots = SkateSpot::with(['images', 'user'])
             ->where('status', 'approved')
             ->get()
             ->map(function($spot) {
