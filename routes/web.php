@@ -37,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
-
+    Route::get('/post/{id}', [ProfileController::class, 'showSkateModalForPost'])->name('profile.showSkateModalForPost');
 });
 
 

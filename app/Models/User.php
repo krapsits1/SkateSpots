@@ -55,5 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SkateSpot::class);
     }
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
 
 }

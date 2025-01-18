@@ -108,10 +108,8 @@
                     <div class="col-4">
                         <div class="post">
                             @if($skateSpot->images->isNotEmpty())
-                                <div class="image-container">
-                                    <a onclick="showModalSkatePost(this)" data-id="{{ $skateSpot->id }}">
-                                        <img src="{{ asset('storage/' . $skateSpot->images->first()->path) }}" alt="{{ $skateSpot->title }}" class="img-fluid">
-                                    </a>
+                                <div class="skateSpotPost image-container" data-id="{{ $skateSpot->id }}">
+                                    <img src="{{ asset('storage/' . $skateSpot->images->first()->path) }}" alt="{{ $skateSpot->title }}" class="img-fluid">
                                 </div>
                             @else
                                 <div class="image-container">
@@ -124,10 +122,7 @@
             </div>
         </div>
     </div>
-    {{-- @if($selectedSkateSpot)
-        @include('layouts.userProfileSkateModal',['skateSpots' => $skateSpots], ['selectedSkateSpot' => $selectedSkateSpot])
-    @endif --}}
-    @include('layouts.userProfileSkateModal')
+        @include('layouts.userPost',['skateSpots' => $skateSpots], ['selectedSkateSpot' => $selectedSkateSpot], ['user' => $user])
 
     <script src="{{ asset('js/userProfile.js') }}" defer></script>
     <script src="{{ asset('js/reviewModal.js') }}" defer></script>

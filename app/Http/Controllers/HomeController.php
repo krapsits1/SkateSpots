@@ -15,18 +15,7 @@ class HomeController extends Controller
     public function index()
     {
         //vajag tikai skate spot ids un location
-         $skateSpots = SkateSpot::with(['images', 'user'])
-            ->where('status', 'approved')
-            ->get()
-            ->map(function($spot) {
-                $spot->date = $spot->created_at->format('Y-m-d H:i');
-                $spot->image_paths = $spot->images->map(function($image) {
-                    return asset('storage/' . $image->path); // Generate full URL for each image
-                });
-                return $spot;
-            });
-
-        // Pass the skate spots to the home view
+        $skateSpots = SkateSpot::select('id', 'latitude', 'longitude')->where('status', 'approved')->get();
         return view('home', compact('skateSpots'));
     }
 }

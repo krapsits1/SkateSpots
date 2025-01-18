@@ -6,23 +6,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Illuminate\Support\Facades\Log; // Add this line
+use App\Models\SkateSpot; // Assuming you have a SkateSpot model
+use App\Models\Review;
 
 class ProfileController extends Controller
 {
     public function show($username)
     {
-        $user = User::where('username', $username)->firstOrFail();
+        $user = User::select(['username','bio','profile_picture','facebook_link','cover_photo','instagram_link','youtube_link'])->where('username', $username)->firstOrFail();
         
         if ($user->role === 'admin') {
             abort(403, 'Access denied');
 
         }
-        $skateSpots = $user->skateSpots; 
-        $selectedSkateSpot = $skateSpots->first();
+        $skateSpots = $user->skateSpots()->select(['id', 'title', 'description', 'latitude', 'longitude', 'user_id', 'created_at','status'])->with(['images:skate_spot_id,path'])->get(); 
+      
+        $selectedSkateSpot =$selectedSkateSpot = SkateSpot::select(['id', 'title', 'description', 'latitude', 'longitude', 'user_id', 'created_at','status'])
+        ->with(['images:id,skate_spot_id,path', 'user:id,username,profile_picture', 'reviews.user:id,username,profile_picture'])->first();
+
 
         $skateSpotCount = $skateSpots->count();
 
-
+        log::info($selectedSkateSpot);
         return view('profile', compact('user', 'selectedSkateSpot','skateSpots', 'skateSpotCount')); 
     }
 
@@ -93,5 +99,25 @@ class ProfileController extends Controller
 
         // Redirect back with success message
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function showSkateModalForPost($id)
+    {
+        Log::info("Handling request for User post with id: $id");
+
+        if(request()->ajax()){
+            $selectedSkateSpot = SkateSpot::find($id);
+            if (!$selectedSkateSpot) {
+                abort(404, 'Skate spot not found');
+            }else{
+                $selectedSkateSpot = SkateSpot::select(['id', 'title', 'description', 'latitude', 'longitude', 'user_id', 'created_at','status'])
+                ->with(['images:id,skate_spot_id,path', 'user:id,username,profile_picture', 'reviews.user:id,username,profile_picture'])->find($id);
+
+                $modalHtml = view('layouts.userPost', ['selectedSkateSpot' => $selectedSkateSpot])->render();
+                return response()->json(['skateSpot' => $selectedSkateSpot , 'modalHtml' => $modalHtml]);
+            }
+
+        }
+      
     }
 }

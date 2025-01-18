@@ -2,12 +2,13 @@ function showModalskate(row) {
     console.log("row",row);
     const skateSpotId = row.getAttribute('data-id');
     console.log(skateSpotId);
-    fetch(`/skate-spot/${skateSpotId}`) ///admin/skate-spot/${skateSpotId}
+        fetch(`/skate-spot/${skateSpotId}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
         .then(response => response.json())
         .then(data => {
-            console.log("bURRRRRRRRRRRR");
-            document.getElementById('username').textContent = data.skateSpot.user.username;
 
+            document.getElementById('username').textContent = data.skateSpot.user.username;
             document.getElementById('userProfilePic').src = data.skateSpot.user.profile_picture ? '/storage/' + data.skateSpot.user.profile_picture : '/images/person.svg';
             document.getElementById('username').textContent = data.skateSpot.user.username;
             document.getElementById('modalTitle').textContent = data.skateSpot.title;
@@ -17,7 +18,7 @@ function showModalskate(row) {
             document.getElementById('modalLongitude').textContent = data.skateSpot.longitude;
 
             const carouselInner = document.querySelector('#carouselExampleControls .carousel-inner');
-            carouselInner.innerHTML = ''; // Clear existing items
+            carouselInner.innerHTML = ''; 
             const images = data.skateSpot.images;
             if (Array.isArray(images) && images.length > 0) {
                 images.forEach((image, index) => {
@@ -127,16 +128,33 @@ function copyCoordinatesToClipboard() {
 
 
 
-function showModalSkatePost(row) {
-    const skateSpotId = row.getAttribute('data-id');
-    console.log(skateSpotId);
-    fetch(`/skate-spot/${skateSpotId}`,{
-            headers: {'X-Requested-With': 'XMLHtppRequest'}
-        }) 
+document.querySelectorAll('.skateSpotPost').forEach((img) => {
+    img.addEventListener('click', (event) => {
+        const skateSpotId = img.getAttribute('data-id');
+        console.log(skateSpotId);
+
+        fetch(`/post/${skateSpotId}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('username').textContent = data.skateSpot.user.username;
+            console.log(data);
+            
+            if (data.skateSpot.status === 'approved') {
+                data.skateSpot.status = 'Approved';
+            } else if (data.skateSpot.status === 'pending') {
+                data.skateSpot.status = 'Pending';
+            }
+            
+            document.getElementById('status').textContent = data.skateSpot.status;
+            const statusElement = document.getElementById('status');
 
+            if (statusElement.textContent.trim().toLowerCase() === 'pending') {
+                statusElement.style.color = 'orange'; // Set text color to orange for "pending"
+            } else if (statusElement.textContent.trim().toLowerCase() === 'approved') {
+                statusElement.style.color = 'green'; // Set text color to green for "approved"
+            }
+            document.getElementById('username').textContent = data.skateSpot.user.username;
             document.getElementById('userProfilePic').src = data.skateSpot.user.profile_picture ? '/storage/' + data.skateSpot.user.profile_picture : '/images/person.svg';
             document.getElementById('username').textContent = data.skateSpot.user.username;
             document.getElementById('modalTitle').textContent = data.skateSpot.title;
@@ -146,7 +164,7 @@ function showModalSkatePost(row) {
             document.getElementById('modalLongitude').textContent = data.skateSpot.longitude;
 
             const carouselInner = document.querySelector('#carouselExampleControls .carousel-inner');
-            carouselInner.innerHTML = ''; // Clear existing items
+            carouselInner.innerHTML = ''; 
             const images = data.skateSpot.images;
             if (Array.isArray(images) && images.length > 0) {
                 images.forEach((image, index) => {
@@ -230,20 +248,11 @@ function showModalSkatePost(row) {
                 reviewsContent.innerHTML = '<p>No reviews yet. Be the first to add one!</p>';
             }
 
-            const deleteForm = document.getElementById('deleteSkateSpotForm');
-            deleteForm.action = `/skateSpots/${skateSpotId}`;
-
-            var myModal = new bootstrap.Modal(document.getElementById('userProfileSkateModal'));
+            var myModal = new bootstrap.Modal(document.getElementById('skateSpotViewModal'));
             myModal.show();
 
-            // document.querySelector('body').setAttribute('inert', 'true');
-
-            // // Remove inert attribute when modal is hidden
-            // document.getElementById('skateSpotViewModal').addEventListener('hidden.bs.modal', function () {
-            //     document.querySelector('body').removeAttribute('inert');
-            // });
         })
-        .catch(error => console.error('Error fetching skate spot details:', error));
-}
-
+        .catch(error => console.error('Error fetching user post details:', error));
+    });
+});
 
