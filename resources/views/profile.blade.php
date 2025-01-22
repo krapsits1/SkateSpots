@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     @include('layouts.head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <nav class="navbar border navbar-expand-lg navbar-light bg-light">
@@ -122,7 +123,8 @@
             </div>
         </div>
     </div>
-        @include('layouts.userPost',['skateSpots' => $skateSpots], ['selectedSkateSpot' => $selectedSkateSpot], ['user' => $user])
+    
+    @include('layouts.userPost')
 
     <script src="{{ asset('js/userProfile.js') }}" defer></script>
     <script src="{{ asset('js/reviewModal.js') }}" defer></script>

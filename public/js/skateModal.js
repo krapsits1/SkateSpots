@@ -131,29 +131,50 @@ function copyCoordinatesToClipboard() {
 document.querySelectorAll('.skateSpotPost').forEach((img) => {
     img.addEventListener('click', (event) => {
         const skateSpotId = img.getAttribute('data-id');
-        console.log(skateSpotId);
+        console.log("skate spot id ", skateSpotId);
 
         fetch(`/post/${skateSpotId}`, {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => response.json())
         .then(data => {
+            
             console.log(data);
+            var status = data.skateSpot.status;
+            var statusText = '';
+            var statusColor = '';
             
-            if (data.skateSpot.status === 'approved') {
-                data.skateSpot.status = 'Approved';
-            } else if (data.skateSpot.status === 'pending') {
-                data.skateSpot.status = 'Pending';
+            if (status === 'approved') {
+                statusText = 'Approved';
+                statusColor = 'green';
+            } else if (status === 'pending') {
+                statusText = 'Pending';
+                statusColor = 'orange';
             }
             
-            document.getElementById('status').textContent = data.skateSpot.status;
-            const statusElement = document.getElementById('status');
+            if (statusText) {
+                const statusElement = document.createElement('span');
+                statusElement.textContent = statusText;
+                statusElement.style.color = statusColor;
+            
+                if (data.authUser === data.skateSpot.user.username) {
+                    const modalHeader = document.getElementById('modalHeader');
+                    modalHeader.innerHTML = `
+                        <h5 class="modal-title" id="status"></h5>
+                        <h5 class="p-2" id="skateSpotID">${data.skateSpot.id}</h5>
+                    `;
+                    document.getElementById('status').appendChild(statusElement);
+                }
+            }
 
-            if (statusElement.textContent.trim().toLowerCase() === 'pending') {
-                statusElement.style.color = 'orange'; // Set text color to orange for "pending"
-            } else if (statusElement.textContent.trim().toLowerCase() === 'approved') {
-                statusElement.style.color = 'green'; // Set text color to green for "approved"
-            }
+            // if (statusElement.textContent === 'Pending') {
+            //     statusElement.style.color = 'orange'; // Set text color to orange for "pending"
+            // } else if (statusElement.textContent === 'Approved') {
+            //     statusElement.style.color = 'green'; // Set text color to green for "approved"
+            // }
+
+
+            document.getElementById('username').textContent = data.skateSpot.user.username;
             document.getElementById('username').textContent = data.skateSpot.user.username;
             document.getElementById('userProfilePic').src = data.skateSpot.user.profile_picture ? '/storage/' + data.skateSpot.user.profile_picture : '/images/person.svg';
             document.getElementById('username').textContent = data.skateSpot.user.username;
@@ -162,6 +183,8 @@ document.querySelectorAll('.skateSpotPost').forEach((img) => {
             document.getElementById('modalDescription').textContent = data.skateSpot.description;
             document.getElementById('modalLatitude').textContent = data.skateSpot.latitude;
             document.getElementById('modalLongitude').textContent = data.skateSpot.longitude;
+            document.getElementById('addReviewModalTitle').textContent = data.skateSpot.title;
+            document.getElementById('addReviewModalDate').textContent = new Date(data.skateSpot.created_at).toLocaleDateString();
 
             const carouselInner = document.querySelector('#carouselExampleControls .carousel-inner');
             carouselInner.innerHTML = ''; 
@@ -178,6 +201,29 @@ document.querySelectorAll('.skateSpotPost').forEach((img) => {
             } else {
                 console.warn('No images found for this skate spot.');
             }
+
+            if (data.authUser === data.skateSpot.user.username) {
+                const modalFooter = document.getElementById('modalFooter');
+            
+                // Insert the delete form dynamically
+                modalFooter.innerHTML = `
+                    <form id="deleteSkateSpotForm" method="POST" action="/skate-spots/${data.skateSpot.id}/destroy">
+                        <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button id="deleteSkateSpotButton" type="button" class="btn btn-danger">Delete</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                `;
+            
+                // Add event listener to the delete button
+                document.getElementById("deleteSkateSpotButton").addEventListener("click", () => {
+                    confirmDelete(data.skateSpot.title);
+                });
+            }
+            
+
+
+            //Reviews
             const reviews = data.skateSpot.reviews;
             const reviewCount = reviews.length;
             let totalRating = 0;
@@ -243,6 +289,9 @@ document.querySelectorAll('.skateSpotPost').forEach((img) => {
                         <hr>
                     </div>
                 `;
+
+                setReviewFormAction(data.skateSpot.id); // Dynamically update the form's action
+
                 });
             } else {
                 reviewsContent.innerHTML = '<p>No reviews yet. Be the first to add one!</p>';
@@ -256,3 +305,29 @@ document.querySelectorAll('.skateSpotPost').forEach((img) => {
     });
 });
 
+function confirmDelete(skateSpotTitle) {
+    const confirmation = confirm(`Are you sure you want to delete "${skateSpotTitle}"?`);
+    if (confirmation) {
+        submitDeleteForm();
+    }
+}
+
+function submitDeleteForm() {
+    const form = document.getElementById('deleteSkateSpotForm');
+    if (form) {
+        form.submit();
+    }
+}
+
+function setReviewFormAction(skateSpotId) {
+    const form = document.getElementById('addReviewModalID');
+    console.log("ad review skate spot id", skateSpotId);
+    if (form) {
+        form.action = `/skate-spots/${skateSpotId}/add-review`;
+    }
+}
+
+function seeUserProfile(username) {
+    // const username = row.getAttribute('username');
+    window.location.href = `/profile/${username}`;
+}

@@ -5,6 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="skateSpotViewModalLabel">Skate Spot Details</h5>
+                <h5 class="p-2" id="skateSpotID">{{$selectedSkateSpot->id}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -114,7 +115,7 @@
                     <img id="userProfilePicture" src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : '/images/person.svg' }}" class="skateModal-profile-pic" alt="skateModalProfilePic">
                     <h5 class="pr-6" id="username">{{ auth()->user()->username }}</h5>  
                 </div>
-                <form action="{{route('skate-spots.addReview',['id' => $selectedSkateSpot->id])}}" method="POST">
+                <form id="addReviewModalID" action="{{route('skate-spots.addReview',['id' => $selectedSkateSpot->id])}}" method="POST">
                     @csrf
                     <div class="star-rating-container">
                         <div class="d-flex justify-content-center p-4">

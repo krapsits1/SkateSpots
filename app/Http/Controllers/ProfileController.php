@@ -14,22 +14,26 @@ class ProfileController extends Controller
 {
     public function show($username)
     {
-        $user = User::select(['username','bio','profile_picture','facebook_link','cover_photo','instagram_link','youtube_link'])->where('username', $username)->firstOrFail();
+        $authUser = Auth::user()->username;  
+
+        $user = User::where('username', $username)->firstOrFail();
         
         if ($user->role === 'admin') {
             abort(403, 'Access denied');
-
         }
-        $skateSpots = $user->skateSpots()->select(['id', 'title', 'description', 'latitude', 'longitude', 'user_id', 'created_at','status'])->with(['images:skate_spot_id,path'])->get(); 
-      
-        $selectedSkateSpot =$selectedSkateSpot = SkateSpot::select(['id', 'title', 'description', 'latitude', 'longitude', 'user_id', 'created_at','status'])
-        ->with(['images:id,skate_spot_id,path', 'user:id,username,profile_picture', 'reviews.user:id,username,profile_picture'])->first();
+        if($authUser === $user->username){
+ 
+            $skateSpots = $user->skateSpots()->orderBy('created_at', 'desc')->get(); 
+            $selectedSkateSpot = $skateSpots->first();
 
-
-        $skateSpotCount = $skateSpots->count();
-
-        log::info($selectedSkateSpot);
-        return view('profile', compact('user', 'selectedSkateSpot','skateSpots', 'skateSpotCount')); 
+            $skateSpotCount = $skateSpots->count();
+        }else{
+            $skateSpots = $user->skateSpots()->where('status', 'approved')->orderBy('created_at', 'desc')->get();
+            $selectedSkateSpot = $skateSpots->first();
+            $skateSpotCount = $skateSpots->count();
+        }
+        log::info($user);
+        return view('profile', compact('authUser','user', 'selectedSkateSpot','skateSpots', 'skateSpotCount')); 
     }
 
     public function edit()
@@ -103,8 +107,6 @@ class ProfileController extends Controller
 
     public function showSkateModalForPost($id)
     {
-        Log::info("Handling request for User post with id: $id");
-
         if(request()->ajax()){
             $selectedSkateSpot = SkateSpot::find($id);
             if (!$selectedSkateSpot) {
@@ -112,9 +114,11 @@ class ProfileController extends Controller
             }else{
                 $selectedSkateSpot = SkateSpot::select(['id', 'title', 'description', 'latitude', 'longitude', 'user_id', 'created_at','status'])
                 ->with(['images:id,skate_spot_id,path', 'user:id,username,profile_picture', 'reviews.user:id,username,profile_picture'])->find($id);
+               
+                $authUser = Auth::user()->username;  
 
                 $modalHtml = view('layouts.userPost', ['selectedSkateSpot' => $selectedSkateSpot])->render();
-                return response()->json(['skateSpot' => $selectedSkateSpot , 'modalHtml' => $modalHtml]);
+                return response()->json(['skateSpot' => $selectedSkateSpot , 'modalHtml' => $modalHtml, 'authUser' => $authUser]);
             }
 
         }

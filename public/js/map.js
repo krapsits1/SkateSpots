@@ -5,7 +5,8 @@ let marker;
 window.initMap = function() {
     
     const initialLocation = { lat: 56.9, lng: 24.1 }; 
-    
+    console.log('initMap called!');
+
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
         center: initialLocation,
@@ -119,15 +120,25 @@ function handleModalClose() {
     history.replaceState({}, '', newPath);
 }
 
+const categoryIcons = {
+    street_spot: '/icons/street_spot_icon.png',
+    skatepark: '/icons/skatepark_icon.png',
+    skate_shop: '/icons/skate_shop_icon.png',
+};
 
 function loadSkateSpots() {
     skateSpots.forEach(spot => {
         const spotLatLng = new google.maps.LatLng(spot.latitude, spot.longitude);
-        const marker = new google.maps.marker.AdvancedMarkerElement({
+        const icon = categoryIcons[spot.category];  // Fallback to a default icon if category is not found
+
+        // Create a new marker with the custom icon
+        const marker = new google.maps.Marker({
             position: spotLatLng,
             map: map,
             title: spot.title,
+            icon: icon, // Set the icon
         });
+
         
         marker.addListener('click', function() {
 
@@ -142,6 +153,7 @@ function loadSkateSpots() {
                 var myModal = new bootstrap.Modal(document.getElementById('skateSpotViewModal'));
                 myModal.show();
 
+                document.getElementById('skateSpotID').textContent = data.skateSpot.id;
 
                 // Add event listener for when the modal is hidden
                 document.getElementById('skateSpotViewModal').addEventListener('hidden.bs.modal', handleModalClose);
@@ -170,9 +182,11 @@ function loadSkateSpots() {
                 document.getElementById('modalDescription').textContent = data.skateSpot.description;
                 document.getElementById('modalLatitude').textContent = data.skateSpot.latitude;
                 document.getElementById('modalLongitude').textContent = data.skateSpot.longitude;
-
+                if(data.authUser){
+                    document.getElementById('addReviewModalTitle').textContent = data.skateSpot.title;
+                    document.getElementById('addReviewModalDate').value = new Date(data.skateSpot.created_at).toLocaleDateString();
+                }
                 const reviews = data.skateSpot.reviews;
-                console.log(reviews);
                 const reviewCount = reviews.length;
                 let totalRating = 0;
                 reviews.forEach(review => {
@@ -238,11 +252,14 @@ function loadSkateSpots() {
                         </div>
                     `;
                     });
+
+
                 } else {
                     reviewsContent.innerHTML = '<p>No reviews yet. Be the first to add one!</p>';
                 }
 
-
+                console.log("skateSpot id prieks review:", data.skateSpot.id);
+                setReviewFormAction(data.skateSpot.id); // Dynamically update the form's action
                 // Update history state
                 updateHistoryState(data.skateSpot.id);
                   
@@ -252,6 +269,13 @@ function loadSkateSpots() {
             .catch(error => console.error('Error fetching skate spot details:', error));
         });
     });
+}
+
+function setReviewFormAction(skateSpotId) {
+    const form = document.getElementById('addReviewModalID');
+    if (form) {
+        form.action = `/skate-spots/${skateSpotId}/add-review`;
+    }
 }
 
 function getFetchUrl(spotId) {
@@ -297,8 +321,8 @@ function copyCoordinatesToClipboard() {
 }
 
 
-function seeUserProfile(row){
-    const username = row.getAttribute('data-username');
+function seeUserProfile(username) {
+    // const username = row.getAttribute('username');
     window.location.href = `/profile/${username}`;
 }
 

@@ -28,6 +28,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('about') }}">About</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('topSpots') }}">Top Spots</a>
                 </li>
                 <li class="nav-item">
@@ -269,9 +272,10 @@
     </div>
     <script src="{{ asset('js/map.js') }}" defer></script>
     <script src="{{ asset('js/userProfile.js') }}" defer></script>
-    <script src="{{ asset('js/skateModal.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/skateModal.js') }}" defer></script> --}}
 
     <script src="{{ asset('js/reviewModal.js') }}" defer></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap&libraries=places,marker&map_ids={{ env('GOOGLE_MAPS_IDS') }}&loading=async"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap&libraries=places,marker&map_ids={{ env('GOOGLE_MAPS_IDS') }}&loading=async"></script>
 </body>
+@include('layouts.footer')  
 </html>

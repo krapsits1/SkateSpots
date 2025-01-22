@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function index()
     {
         //vajag tikai skate spot ids un location
-        $skateSpots = SkateSpot::select('id', 'latitude', 'longitude')->where('status', 'approved')->get();
+        $skateSpots = SkateSpot::select('id', 'latitude', 'longitude', 'category')->where('status', 'approved')->get();
         return view('home', compact('skateSpots'));
     }
 }

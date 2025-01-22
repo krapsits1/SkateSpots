@@ -80,8 +80,6 @@ class SkateSpotController extends Controller
             ]);
             
     
-            Log::info("repsonse: $response");
-
             $geoData = $response->json();
     
             if (!empty($geoData)) {
@@ -113,7 +111,7 @@ class SkateSpotController extends Controller
     public function welcome()
     {
 
-        $skateSpots = SkateSpot::select(['id','latitude', 'longitude'])->where('status', 'approved')->get();
+        $skateSpots = SkateSpot::select(['id','latitude', 'longitude', 'category'])->where('status', 'approved')->get();
     
         return view('welcome', compact('skateSpots'));
     }
@@ -153,7 +151,7 @@ class SkateSpotController extends Controller
     protected function handleAjaxRequest($id)
     {
         $selectedSkateSpot = SkateSpot::find($id);
-    
+        $authUser = Auth::check();
         if (!$selectedSkateSpot) {
             abort(404, 'Skate spot not found');
         }else{
@@ -162,9 +160,8 @@ class SkateSpotController extends Controller
         }
         //view layouts.skateModal
         $modalHtml = view('layouts.skateModal', ['selectedSkateSpot' => $selectedSkateSpot])->render();
-        Log::info("Modal HTML: $modalHtml");    
         //Jāsūta arī modelis.
-        return response()->json(['skateSpot' => $selectedSkateSpot , 'modalHtml' => $modalHtml]);
+        return response()->json(['skateSpot' => $selectedSkateSpot ,'authUser' => $authUser, 'modalHtml' => $modalHtml]);
     }
     
     //Skate spot show handler for standard request

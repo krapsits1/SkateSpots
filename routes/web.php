@@ -18,6 +18,16 @@ Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(
 Route::get('/', [SkateSpotController::class, 'welcome'])->name('welcome');
 Route::get('/top-spots', [SkateSpotController::class, 'topSpots'])->name('topSpots');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy-policy');
+
+
+
 Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.dashboard');
@@ -38,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/post/{id}', [ProfileController::class, 'showSkateModalForPost'])->name('profile.showSkateModalForPost');
+    Route::delete('/skate-spots/{id}/destroy', [SkateSpotController::class, 'destroy'])->name('skateSpots.destroy');
+
 });
 
 
@@ -57,7 +69,5 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/skate-spot/{id}', [SkateSpotController::class, 'show'])->name('skate-spot.show');
 Route::get('home/skate-spot/{id}', [SkateSpotController::class, 'show'])->name('skate-spot.home.show');
 // Route::get('home/skate-spot/post/{id}', [SkateSpotController::class, 'showSkateModalForPost'])->name('skate-spot.home.showSkateModalForPost');
-
-Route::delete('/skate-spots/{id}', [SkateSpotController::class, 'destroy'])->name('skateSpots.destroy');
 
 Route::post('/skate-spots/{id}/add-review', [SkateSpotController::class, 'addReview'])->name('skate-spots.addReview');

@@ -4,7 +4,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="status">status</h5>
+                <div id = "modalHeader">
+                    {{-- <h5 class="modal-title" id="status">status</h5>
+                    <h5 class="p-2" id="skateSpotID">id</h5> --}}
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -33,8 +36,8 @@
                                 <h5 class="pr-6" id="username">username</h5>
                             </div>  
                             <div class="d-flex justify-content-between align-items-center pt-2">
-                                <h5 class="" id="modalTitle">{{ $selectedSkateSpot->title }}</h5>
-                                <p class="date" id="modalDate">{{ $selectedSkateSpot->created_at->format('Y-m-d') }}</p>
+                                <h5 class="" id="modalTitle">Title</h5>
+                                <p class="date" id="modalDate">Date</p>
                             </div>
                             <div id="carouselExampleControls" class="carousel slide pt-2" data-bs-ride="carousel">
                                 <div class="carousel-inner"></div>
@@ -86,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div id = "modalFooter" class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -106,15 +109,15 @@
             </div>
             <div class="modal-body">
                 <div class="d-flex justify-content-between align-items-center pt-2">
-                    <h5 class="" id="addReviewModalTitle">{{ $selectedSkateSpot->title }}</h5>
-                    <p class="date" id="addReviewModalDate">{{ $selectedSkateSpot->created_at->format('Y-m-d') }}</p>
+                    <h5 class="" id="addReviewModalTitle">Title</h5>
+                    <p class="date" id="addReviewModalDate">Date</p>
                 </div>
                 
                 <div onclick="seeUserProfile(this.querySelector('#username').textContent)" class="skateModal-profile pt-2 d-flex flex-row align-items-center">
                     <img id="userProfilePicture" src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : '/images/person.svg' }}" class="skateModal-profile-pic" alt="skateModalProfilePic">
                     <h5 class="pr-6" id="username">{{ auth()->user()->username }}</h5>  
                 </div>
-                <form action="{{route('skate-spots.addReview',['id' => $selectedSkateSpot->id])}}" method="POST">
+                <form id="addReviewModalID" action="" method="POST">
                     @csrf
                     <div class="star-rating-container">
                         <div class="d-flex justify-content-center p-4">
