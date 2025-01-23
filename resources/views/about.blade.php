@@ -46,17 +46,12 @@
         
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <p>
-                    Welcome to <strong>SkateSpots</strong>, the ultimate platform for skateboarders to discover, share, and explore the best skateboarding locations! Whether you're searching for a local skatepark, a hidden street spot, or the nearest skate shop, SkateSpots is here to enhance your skateboarding experience.
-                </p>
+
     
                 <h3 class="mt-5">How to Add a Skate Spot</h3>
-                <p>
-                    Adding a new skate spot is easy and fun! Follow these steps to share your favorite spots with the SkateSpots community:
-                </p>
                 <ol>
                     <li>
-                        <strong>Log In:</strong> To add a skate spot, you must be logged in to your account. If you don't have an account, you can <a href="{{ route('register') }}">register here</a>.
+                        <strong>Log In:</strong> To add a skate spot, you must be logged in to your account <a href="{{ route('login') }}">Login</a>. If you don't have an account, you can <a href="{{ route('register') }}">register here</a>.
                     </li>
                     <li>
                         <strong>Click the "Add Skate Spot" Button:</strong> Once logged in, you'll see the "Add Skate Spot" button on the <a href="{{ route('home') }}">Home</a> page or in the navigation menu.
@@ -75,7 +70,17 @@
                         <strong>Submit:</strong> After filling out the form, click the "Submit" button. Your skate spot will be sent for review.
                     </li>
                 </ol>
-    
+
+                <!-- Video Section -->
+                <div class="row justify-content-center mt-5">
+                    <div class="col-12 col-md-8 text-center">
+                        <video controls preload="none" class="img-fluid">
+                            <source src="{{ asset('videos/Rec.mov') }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            
                 <h3 class="mt-5">Admin Verification</h3>
                 <p>
                     To maintain the quality and reliability of the information on SkateSpots, all newly added skate spots undergo an admin verification process. Once your submission is reviewed and approved, the skate spot will become visible to the public. This ensures a trustworthy and accurate database for the entire community.

@@ -161,7 +161,6 @@ document.querySelectorAll('.skateSpotPost').forEach((img) => {
                     const modalHeader = document.getElementById('modalHeader');
                     modalHeader.innerHTML = `
                         <h5 class="modal-title" id="status"></h5>
-                        <h5 class="p-2" id="skateSpotID">${data.skateSpot.id}</h5>
                     `;
                     document.getElementById('status').appendChild(statusElement);
                 }
