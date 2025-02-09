@@ -97,16 +97,6 @@ if (isAuthenticated && addSkateSpotButton) {
         notification.style.display = 'block';
         notification.style.opacity = '1';
 
-        // Hide the notification after 2 seconds
-        // setTimeout(() => {
-        //     notification.style.opacity = '0';
-            
-        //     setTimeout(() => {
-        //         notification.style.display = 'none';
-        //     }, 500); // Inner timeout for further delay
-        // }, 2000);
-
-
     });
 }
 
@@ -120,6 +110,7 @@ function handleModalClose() {
     history.replaceState({}, '', newPath);
 }
 
+
 const categoryIcons = {
     street_spot: '/icons/street_spot_icon.png',
     skatepark: '/icons/skatepark_icon.png',
@@ -127,6 +118,7 @@ const categoryIcons = {
 };
 
 function loadSkateSpots() {
+    console.log('loadSkateSpots called!');
     skateSpots.forEach(spot => {
         const spotLatLng = new google.maps.LatLng(spot.latitude, spot.longitude);
         const icon = categoryIcons[spot.category];  // Fallback to a default icon if category is not found
@@ -153,7 +145,7 @@ function loadSkateSpots() {
                 var myModal = new bootstrap.Modal(document.getElementById('skateSpotViewModal'));
                 myModal.show();
 
-                document.getElementById('skateSpotID').textContent = data.skateSpot.id;
+                // document.getElementById('skateSpotID').textContent = data.skateSpot.id;
 
                 // Add event listener for when the modal is hidden
                 document.getElementById('skateSpotViewModal').addEventListener('hidden.bs.modal', handleModalClose);

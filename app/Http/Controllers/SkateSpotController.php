@@ -55,56 +55,57 @@ class SkateSpotController extends Controller
     //Skate Spots handler for top spots view
     public function topSpots(Request $request)
     {
-        // Fetch top-rated skate spots
-        $query = SkateSpot::with(['images', 'user', 'reviews'])
-            ->withAvg('reviews', 'rating')
-            ->orderByDesc('reviews_avg_rating');
+        // // Fetch top-rated skate spots
+        // $query = SkateSpot::with(['images', 'user', 'reviews'])
+        //     ->withAvg('reviews', 'rating')
+        //     ->orderByDesc('reviews_avg_rating');
     
-        // Filter by category if selected
-        if ($request->filled('category') && $request->category != 'all') {
-            $query->where('category', $request->category);
-        }
+        // // Filter by category if selected
+        // if ($request->filled('category') && $request->category != 'all') {
+        //     $query->where('category', $request->category);
+        // }
     
-        // Search by location if provided
-        if ($request->filled('location')) {
+        // // Search by location if provided
+        // if ($request->filled('location')) {
 
-            Log::info("Location controller");
+        //     Log::info("Location controller");
 
 
-            $response = Http::withHeaders([
-                'User-Agent' => 'SkateSpots (emilsvetra@email.com)'  // Set your app name and email
-            ])->get("https://nominatim.openstreetmap.org/search", [
-                'q' => $request->location,
-                'format' => 'json',
-                'limit' => 1,
-            ]);
+        //     $response = Http::withHeaders([
+        //         'User-Agent' => 'SkateSpots (emilsvetra@email.com)'  // Set your app name and email
+        //     ])->get("https://nominatim.openstreetmap.org/search", [
+        //         'q' => $request->location,
+        //         'format' => 'json',
+        //         'limit' => 1,
+        //     ]);
             
     
-            $geoData = $response->json();
+        //     $geoData = $response->json();
     
-            if (!empty($geoData)) {
-                $latitude = $geoData[0]['lat'];
-                $longitude = $geoData[0]['lon'];
+        //     if (!empty($geoData)) {
+        //         $latitude = $geoData[0]['lat'];
+        //         $longitude = $geoData[0]['lon'];
                 
-                Log::info("Geocoded location: $latitude, $longitude");
+        //         Log::info("Geocoded location: $latitude, $longitude");
                 
-                // Apply a proximity filter (within 50km for example)
-                $query->whereRaw("
-                    ST_Distance_Sphere(
-                        point(longitude, latitude), 
-                        point(?, ?)
-                    ) < 50000", [$longitude, $latitude]);
-            }
-        }
+        //         // Apply a proximity filter (within 50km for example)
+        //         $query->whereRaw("
+        //             ST_Distance_Sphere(
+        //                 point(longitude, latitude), 
+        //                 point(?, ?)
+        //             ) < 50000", [$longitude, $latitude]);
+        //     }
+        // }
     
-        // Filter by rating if provided
-        if ($request->filled('rating')) {
-            $query->having('reviews_avg_rating', '>=', $request->rating);
-        }
+        // // Filter by rating if provided
+        // if ($request->filled('rating')) {
+        //     $query->having('reviews_avg_rating', '>=', $request->rating);
+        // }
     
-        $topSpots = $query->get(); // Adjust the number of top spots as needed
+        // $topSpots = $query->get(); // Adjust the number of top spots as needed
     
-        return view('topSpots', compact('topSpots'));
+        // return view('topSpots', compact('topSpots'));
+        return view('layouts.comingSoon');
     }
 
     //Welcome page handler (vajag tikai skate spot ids un location)
