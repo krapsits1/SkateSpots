@@ -31,41 +31,71 @@
             </div>
         </div>
     </nav>
-    <div class="container mt-5">
-        <h2>Register</h2>
-        <form action="{{ url('/register') }}" method="POST">
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="card shadow-lg p-4" style="max-width: 900px; width: 100%;">
+          <h3 class="text-center mb-4">Register</h3>
+      
+          @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ session('success') }}
+            </div>
+          @endif
+      
+          <form action="{{ route('register') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" id="username" value="{{ old('username') }}" required>
-                @error('username')
-                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                @enderror
+              <label for="name" class="form-label">Name</label>
+              <input id="name" type="text" 
+                     class="form-control @error('name') is-invalid @enderror" 
+                     name="name" value="{{ old('name') }}" required autofocus>
+              @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+      
             <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ old('email') }}" required>
-                @error('email')
-                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                @enderror
+              <label for="email" class="form-label">Email Address</label>
+              <input id="email" type="email" 
+                     class="form-control @error('email') is-invalid @enderror" 
+                     name="email" value="{{ old('email') }}" required>
+              @error('email')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+      
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" required>
-                @error('password')
-                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                @enderror
+              <label for="password" class="form-label">Password</label>
+              <input id="password" type="password" 
+                     class="form-control @error('password') is-invalid @enderror" 
+                     name="password" required>
+              @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+      
             <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Confirm Password</label>
-                <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" required>
-                @error('password_confirmation')
-                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                @enderror
+              <label for="password_confirmation" class="form-label">Confirm Password</label>
+              <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-            <p class="mt-3">Already have an account? <a href="{{ route('login') }}">Login here</a></p>
-        </form>        
-    </div>
+      
+            <div class="d-grid mb-3">
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+      
+            <div class="text-center mb-3">
+              <button type="button" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2">
+                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" width="20" height="20">
+                Register with Google
+              </button>
+            </div>
+      
+
+            <p class="mt-4 mb-4 text-center">Already have an account?<a class="ps-2" href="{{ route('login') }}">Login here</a></p>
+
+            </p>
+          </form>
+        </div>
+      </div>
+
 </body>
 </html>
