@@ -47,14 +47,14 @@
         </h1>
         <p>Explore local skateparks, street spots, and hidden gems.</p>    
     </div>
-    <div class="pb-2 d-flex justify-content-center align-items-center">
+    <div class="mb-3 d-flex justify-content-center align-items-center">
     <!-- If the user is not authenticated, redirect them to the login page -->
         <a href="{{ route('login') }}" class="btn btn-primary" id="add-skate-spot">
             Add Skate Spot
         </a>
     </div>
     <div class="text-center">
-        <input id="searchBox" type="text" class="form-control mx-auto" placeholder="Enter a location" style="width: 60%; margin-bottom: 10px;">
+        <input id="searchBox" type="text" class="mb-3 form-control mx-auto" placeholder="Enter a location" style="width: 60%;">
     </div>
     <div id="map"></div>
     <script>

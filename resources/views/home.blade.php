@@ -13,50 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg border navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('images/Logo2.svg') }}" alt="Logo" height="60" class="d-inline-block align-text-top">
-            </a>
-            <!-- Hamburger Menu (for mobile view) -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('about') }}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('topSpots') }}">Top Spots</a>
-                </li>
-                <li class="nav-item">
-                    @auth
-                    <a class="nav-link" href="{{ route('profile.show', ['username' => Auth::user()->username]) }}">Profile</a>
-                    @endauth    
-                </li>
-                <li class="nav-item">
-                    @auth
-                        <a class="nav-link" href="{{ route('logout') }}" style="border: none; background: none; color: rgb(9, 89, 250);"    
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                           Logout
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    @endauth
-                
-                    @guest
-                        <a class="nav-link" href="{{ route('login') }}" style="border: none; background: none; color: rgb(9, 89, 250);">Login</a>
-                    @endguest
-                </li>  
-            </ul>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.homeNav')
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -64,19 +21,19 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    <div class = "pt-2 ms-3">
+    <div class = "m-3">
         <h3>Welcome, {{ Auth::user()->username }}!</h3>
     </div>
-    <div class="d-flex justify-content-center align-items-center my-4">
-        <button id="add-skate-spot" class="btn btn-primary p-2">Add Skate Spot</button>
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <button id="add-skate-spot" class="btn btn-primary">Add Skate Spot</button>
     </div>
     <div id="popup-notification" class="alert alert-info text-center" role="alert" style="display: none;">
         Drop marker in map to add a skate spot.
     </div> 
-    <div class="text-center">
-        <input id="searchBox" type="text" class="form-control mx-auto" placeholder="Enter a location" style="width: 60%; margin-bottom: 10px;">
+    <div class="text-center mb-3">
+        <input id="searchBox" type="text" class="form-control mx-auto" placeholder="Enter a location" style="width: 60%;">
     </div>     
-    <div id="map">
+    <div  id="map">
         <script>
             const isAuthenticated = @json(Auth::check());
             var skateSpots = @json($skateSpots);

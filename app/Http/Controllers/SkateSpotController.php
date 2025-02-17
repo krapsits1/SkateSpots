@@ -177,7 +177,7 @@ class SkateSpotController extends Controller
             ->with(['images:id,skate_spot_id,path', 'user:id,username,profile_picture', 'reviews.user:id,username,profile_picture'])->find($id);
         }
         
-        $skateSpots = SkateSpot::select(['id','latitude', 'longitude'])->where('status', 'approved')->get();
+        $skateSpots = SkateSpot::select(['id','latitude', 'longitude','category'])->where('status', 'approved')->get();
 
         return view(Auth::check() ? 'home' : 'welcome', [
             'selectedSkateSpot' => $selectedSkateSpot,
