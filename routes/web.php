@@ -8,9 +8,47 @@ use App\Http\Controllers\SkateSpotController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReviewController;
-
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
+Auth::routes(['verify' => true]); // Enable email verification routes
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+});
+
+// Resend Verification Email
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/home'); // Redirect after successful verification
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/resend', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return redirect('/home');
+    }
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+
+
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/test-email', function () {
+    Mail::raw('This is a test email from Laravel!', function ($message) {
+        $message->to('skatesspots@gmail.com') // Replace with your email
+                ->subject('Test Email from Laravel');
+    });
+    return 'Email Sent Successfully!';
+});
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');

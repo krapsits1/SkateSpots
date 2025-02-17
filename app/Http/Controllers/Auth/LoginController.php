@@ -18,6 +18,15 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     // Add your customizations here
+    protected function authenticated(Request $request, $user)
+    {
+        if (!$user->hasVerifiedEmail()) {
+            Auth::logout(); // Use the Auth facade
+            return redirect()->route('verification.notice')->with('warning', 'You must verify your email before logging in.');
+        }
+        return redirect()->route('dashboard');
+    }
+
 
     public function showLoginForm()
     {

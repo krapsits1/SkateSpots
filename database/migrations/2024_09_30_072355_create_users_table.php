@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('password');
             $table->string('profile_picture')->nullable(); // Profile picture field
             $table->string('cover_photo')->nullable(); // Cover photo field
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('instagram_link')->nullable(); // Instagram link
             $table->string('facebook_link')->nullable(); // Facebook link
             $table->string('youtube_link')->nullable(); // YouTube link
+            $table->timestamp('email_verified_at')->nullable();
+
             $table->timestamps(); // Created at and updated at fields
         });
     }
