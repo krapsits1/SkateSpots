@@ -8,6 +8,8 @@ use App\Http\Controllers\SkateSpotController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Auth\GoogleController;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -49,6 +51,10 @@ Route::get('/test-email', function () {
     });
     return 'Email Sent Successfully!';
 });
+
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
 
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
