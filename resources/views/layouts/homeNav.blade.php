@@ -34,7 +34,7 @@
                     </form>
                 @endauth
             
-                @guest
+                @guest 
                     <a class="nav-link" href="{{ route('login') }}" style="border: none; background: none; color: rgb(9, 89, 250);">Login</a>
                 @endguest
             </li>  

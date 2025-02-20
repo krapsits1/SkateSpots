@@ -70,12 +70,11 @@
                 </div>
     
                 <div class="text-center">
-                    <button class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2">
+                    <a href="{{ route('auth.google') }}" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2">
                         <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" width="20" height="20">
                         Log in with Google
-                    </button>
+                    </a>
                 </div>
-    
                 <p class="mt-4 mb-4 text-center">Don't have an account? <a class="ps-2" href="{{ route('register') }}">Register here</a></p>
             </form>
         </div>

@@ -78,7 +78,9 @@
               </div>
         </div>
     </div>
-    @include('layouts.skateModal', ['selectedSkateSpot' => $selectedSkateSpot])
+    @if($skateSpots->isNotEmpty())
+        @include('layouts.skateModal', ['selectedSkateSpot' => $selectedSkateSpot])
+    @endif
 
     <script src="{{ asset('js/skateModal.js') }}" defer></script>
     <script src="{{ asset('js/userProfile.js') }}" defer></script>

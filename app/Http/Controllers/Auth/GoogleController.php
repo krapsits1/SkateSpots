@@ -36,7 +36,9 @@ class GoogleController extends Controller
             'username' => $username,
             'password' => bcrypt(Str::random(16)), // Secure random password
         ]);
-    
+        
+        $user->markEmailAsVerified();
+
         // Log in the user
         Auth::login($user);
     

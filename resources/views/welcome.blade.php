@@ -2,6 +2,7 @@
 <html lang="en">
 @include('layouts.head')
 <body>
+    @include('layouts.banner')
     <nav class="navbar navbar-expand-lg  border navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->

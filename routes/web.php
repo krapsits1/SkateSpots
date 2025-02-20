@@ -1,21 +1,75 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SkateSpotController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Auth\GoogleController;
-
 use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Models\User;
 
-Auth::routes(['verify' => true]); // Enable email verification routes
+
+// Route::get('/test-email-verification', function () {
+//     // Find the user by email
+//     $user = User::where('email', 'emilsvetra@gmail.com')->first();
+
+//     if ($user) {
+//         // Send the email verification notification
+//         $user->sendEmailVerificationNotification();
+//         return 'Verification email sent to emilsvetra@gmail.com!';
+//     }
+
+//     return 'User with email emilsvetra@gmail.com not found.';
+// });
+
+
+Auth::routes(['verify' => true]);
+
+//The Email Verification Notice
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+//The Email Verification Handler
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+//Resending the Verification Email
+
+
+Route::post('/email/verify/resend', function (Request $request) {
+    // Resend the verification email
+    if (Auth::check()) {
+        // Log the authenticated user's details
+        $user = Auth::user();
+        Log::debug('User is authenticated', [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
+    } else {
+        // Log that no user is authenticated
+        Log::debug('No user is authenticated.');
+    }    
+    
+    $request->user()->sendEmailVerificationNotification();
+    return view('auth.verify-email')->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+
+
+
+// Auth::routes(['verify' => true]); // Enable email verification routes
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', function () {
@@ -23,42 +77,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('home');
 });
 
-// Resend Verification Email
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/home'); // Redirect after successful verification
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/resend', function (Request $request) {
-    if ($request->user()->hasVerifiedEmail()) {
-        return redirect('/home');
-    }
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
 
-use Illuminate\Support\Facades\Mail;
 
-Route::get('/test-email', function () {
-    Mail::raw('This is a test email from Laravel!', function ($message) {
-        $message->to('skatesspots@gmail.com') // Replace with your email
-                ->subject('Test Email from Laravel');
-    });
-    return 'Email Sent Successfully!';
-});
-
+//Register/Login with Google
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 
 
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
-
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth', 'verified');
 Route::get('/', [SkateSpotController::class, 'welcome'])->name('welcome');
 Route::get('/top-spots', [SkateSpotController::class, 'topSpots'])->name('topSpots');
 
@@ -67,8 +95,8 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::get('/privacy-policy', function () {
-    return view('privacy-policy');
-})->name('privacy-policy');
+    return view('privacy');
+})->name('privacy');
 
 
 
@@ -87,7 +115,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
@@ -106,7 +134,7 @@ Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/skate-spots', [SkateSpotController::class, 'store'])->name('skate-spots.store');
 });
 

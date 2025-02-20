@@ -31,6 +31,16 @@
             </div>
         </div>
     </nav>
+      @if ($errors->any())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
+  @endif
+
     <div class="container d-flex justify-content-center mt-5">
         <div class="card shadow-lg p-4" style="max-width: 900px; width: 100%;">
           <h3 class="text-center mb-4">Register</h3>
@@ -44,11 +54,11 @@
           <form action="{{ route('register') }}" method="POST">
             @csrf
             <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input id="name" type="text" 
-                     class="form-control @error('name') is-invalid @enderror" 
-                     name="name" value="{{ old('name') }}" required autofocus>
-              @error('name')
+              <label for="username" class="form-label">Username</label>
+              <input id="username" type="text" 
+                     class="form-control @error('username') is-invalid @enderror" 
+                     name="username" value="{{ old('username') }}" required autofocus>
+              @error('username')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
             </div>
@@ -83,10 +93,10 @@
             </div>
       
             <div class="text-center mb-3">
-              <button type="button" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2">
-                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" width="20" height="20">
-                Register with Google
-              </button>
+                <a href="{{ route('auth.google') }}" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2">
+                    <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" width="20" height="20">
+                    Register with Google
+                </a>
             </div>
       
 
