@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log; // Add this line
 use Illuminate\Support\Facades\Auth; // Ensure you import Auth
 use Illuminate\Support\Facades\Http;
+use App\Mail\NewSkateSpotAdded;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\Review;
 
@@ -37,6 +39,8 @@ class SkateSpotController extends Controller
 
 
         $skateSpot->user_id = Auth::id(); // Get the ID of the authenticated user
+
+        Mail::to('skatesspots@gmail.com')->send(new NewSkateSpotAdded($skateSpot));
 
         
         // Handle file uploads

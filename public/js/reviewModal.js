@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const observer = new MutationObserver(function (mutationsList, observer) {
         const addReviewModal = document.getElementById('addReviewModal');
         if (addReviewModal) {
-            console.log('addReviewModal dynamically added to the DOM.');
             observer.disconnect(); // Stop observing once the modal is found
             attachModalEventListeners();
         }
@@ -40,7 +39,6 @@ function showAddReviewModal() {
 document.addEventListener('click', function (event) {
     const star = event.target;
     if (star.classList.contains('fa') && star.closest('.star-rating')) {
-        console.log('Star clicked:', star);
 
         const rating = star.getAttribute('data-rating');
         const stars = star.closest('.star-rating').querySelectorAll('.fa');

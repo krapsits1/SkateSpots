@@ -37,7 +37,7 @@
                 <!-- Video Section -->
                 <div class="ratio ratio-16x9 mt-4">
                     <video controls>
-                        <source src="{{ asset('videos/Recording.mov') }}" type="video/mp4">
+                        <source src="{{ asset('videos/Addd_skateSpot.mov') }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -49,7 +49,7 @@
                 <!-- Report Issues -->
                 <h3 class="mt-5 fw-bold">Report Issues or Bugs</h3>
                 <p>If you encounter issues, please email us at: 
-                    <a href="mailto:skatespots@gmail.com" class="text-primary fw-bold">skatespots@gmail.com</a>
+                    <a href="mailto:skatesspots@gmail.com" class="text-primary fw-bold">skatesspots@gmail.com</a>
                 </p>
                 <p>For faster resolution, include:</p>
                 <ul>

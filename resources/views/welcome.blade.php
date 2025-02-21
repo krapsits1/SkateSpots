@@ -72,9 +72,7 @@
             document.addEventListener('DOMContentLoaded', function () {
 
                 const skateSpot = @json($selectedSkateSpot);
-                console.log(skateSpot);
                 
-                console.log("WELCEME PAGE");            
                 const carouselInner = document.querySelector('#carouselExampleControls .carousel-inner');
                 carouselInner.innerHTML = ''; // Clear existing items
                 
