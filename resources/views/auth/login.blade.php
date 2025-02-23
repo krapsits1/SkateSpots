@@ -12,27 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg border navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand" href="{{ route('welcome') }}">
-                <img src="{{ asset('images/Logo2.svg') }}" alt="Logo" height="60" class="d-inline-block align-text-top">
-            </a>
-            <!-- Hamburger Menu (for mobile view) -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}" style="border: none; background: none; color: rgb(9, 89, 250);">Login</a>
-                </li>
-            </ul>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.homeNav')
     <div class="container d-flex justify-content-center mt-5">
         <div class="card shadow-lg p-4" style="max-width: 900px; width: 100%;">
             <h3 class="text-center mb-4">Login</h3>

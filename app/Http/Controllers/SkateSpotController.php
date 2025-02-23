@@ -117,7 +117,8 @@ class SkateSpotController extends Controller
     {
 
         $skateSpots = SkateSpot::select(['id','latitude', 'longitude', 'category'])->where('status', 'approved')->get();
-    
+        Log::info('Google Maps API Key: ' . env('GOOGLE_MAPS_API_KEY'));
+
         return view('welcome', compact('skateSpots'));
     }
     

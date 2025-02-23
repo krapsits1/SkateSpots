@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg border navbar-light bg-light"style="min-height: 10vh">
     <div class="container-fluid">
         <!-- Logo -->
-        <a class="navbar-brand" href="{{ route('home') }}">
+        <a class="navbar-brand" href="{{ Auth::check() ? route('home') : route('welcome') }}">
             <img src="{{ asset('images/Logo2.svg') }}" alt="Logo" class="d-inline-block align-text-top" style="min-height: 9vh">
         </a>
         <!-- Hamburger Menu (for mobile view) -->
