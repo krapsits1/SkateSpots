@@ -7,10 +7,7 @@ html {
     min-width: 300px !important;
 
 }
-body{
-    touch-action: none; /* Disable all touch gestures */
-    overscroll-behavior: none;
-}
+
 
 #map {
     height: 100vh;
