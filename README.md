@@ -1,7 +1,7 @@
 Welcome to **SkateSpots.eu**, the ultimate platform for skaters to discover, share, and review skate spots across Europe! Whether you're looking for a skatepark, a street spot, or a skate shop, SkateSpots.eu is here to help you explore and connect with the skateboarding community.
 
 <p align="center">
-  <img src="public/images/about/Untitled design.png" alt="About SkateSpots.eu" width="300">
+  <img src="public/images/about/Untitled design.png" alt="About SkateSpots.eu" width="800">
 </p>
 
 Visit the website: [SkateSpots.eu](https://skatesspots.eu)
