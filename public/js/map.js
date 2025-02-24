@@ -1,3 +1,9 @@
+
+// In your JS module file:
+// import streetSpotIcon from '../public/icons/street_spot_icon.png';
+// import skateparkIcon from '../public/icons/skatepark_icon.png';
+// import skateShopIcon from '../public/icons/skate_shop_icon.png';
+
 let map;
 let marker;
 
@@ -111,18 +117,13 @@ function handleModalClose() {
 }
 
 
-const categoryIcons = {
-    street_spot: '/icons/street_spot_icon.png',
-    skatepark: '/icons/skatepark_icon.png',
-    skate_shop: '/icons/skate_shop_icon.png',
-};
+
 
 function loadSkateSpots() {
     console.log('loadSkateSpots called!');
     skateSpots.forEach(spot => {
         const spotLatLng = new google.maps.LatLng(spot.latitude, spot.longitude);
         const icon = categoryIcons[spot.category];  // Fallback to a default icon if category is not found
-
         // Create a new marker with the custom icon
         const marker = new google.maps.Marker({
             position: spotLatLng,

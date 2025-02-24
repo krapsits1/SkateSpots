@@ -62,6 +62,11 @@
         const isAuthenticated = @json(Auth::check());
         var skateSpots = @json($skateSpots);
         window.MAP_ID = "{{ env('GOOGLE_MAPS_IDS') }}";
+        const categoryIcons = {
+        street_spot: "{{ url('storage/icons/street_spot_icon.png') }}",
+        skatepark: "{{ url('storage/icons/skatepark_icon.png') }}",
+        skate_shop: "{{ url('storage/icons/skate_shop_icon.png') }}",
+        };
     </script>
 
     {{-- strandarta request --}}
