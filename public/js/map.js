@@ -11,7 +11,6 @@ let marker;
 window.initMap = function() {
     
     const initialLocation = { lat: 56.9, lng: 24.1 }; 
-    console.log('initMap called!');
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 6,
@@ -44,7 +43,11 @@ window.initMap = function() {
                 return;
             }
 
+
             bounds.extend(place.geometry.location);
+
+            placeMarker(place.geometry.location);
+
         });
         map.fitBounds(bounds); 
         const listener = google.maps.event.addListener(map, 'bounds_changed', function() {
@@ -65,20 +68,25 @@ window.initMap = function() {
 
     
 };
-
 function placeMarker(location) {
     if (marker) {
         marker.setPosition(location); 
     } else {
-        marker = new google.maps.marker.AdvancedMarkerElement({
+        marker = new google.maps.Marker({
             position: location,
             map: map,
         });
     }
 
-    document.getElementById('latitude').value = location.lat();
-    document.getElementById('longitude').value = location.lng();
+    const latitudeInput = document.getElementById('latitude');
+    const longitudeInput = document.getElementById('longitude');
 
+    if (latitudeInput && longitudeInput) {
+        latitudeInput.value = location.lat();
+        longitudeInput.value = location.lng();
+    } else {
+        console.error('Latitude or Longitude input element not found');
+    }
 }
 
 function resetCursor() {
@@ -120,7 +128,6 @@ function handleModalClose() {
 
 
 function loadSkateSpots() {
-    console.log('loadSkateSpots called!');
     skateSpots.forEach(spot => {
         const spotLatLng = new google.maps.LatLng(spot.latitude, spot.longitude);
         const icon = categoryIcons[spot.category];  // Fallback to a default icon if category is not found
@@ -251,7 +258,6 @@ function loadSkateSpots() {
                     reviewsContent.innerHTML = '<p>No reviews yet. Be the first to add one!</p>';
                 }
 
-                console.log("skateSpot id prieks review:", data.skateSpot.id);
                 setReviewFormAction(data.skateSpot.id); // Dynamically update the form's action
                 // Update history state
                 updateHistoryState(data.skateSpot.id);

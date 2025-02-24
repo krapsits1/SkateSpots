@@ -52,7 +52,6 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const skateSpot = @json($selectedSkateSpot);
-                console.log("HOME PAGE");
 
                 const carouselInner = document.querySelector('#carouselExampleControls .carousel-inner');
                 carouselInner.innerHTML = ''; // Clear existing items
@@ -96,7 +95,6 @@
 
                 // Update the star rating display
                 const starRatingElement = document.querySelector('.star-rating-total-count');
-                console.log("star rating element",starRatingElement);
                 const stars = starRatingElement.querySelectorAll('.fa');
                 reviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                 stars.forEach((star, index) => {

@@ -1,7 +1,5 @@
 function showModalskate(row) {
-    console.log("row",row);
     const skateSpotId = row.getAttribute('data-id');
-    console.log(skateSpotId);
         fetch(`/skate-spot/${skateSpotId}`, {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
@@ -131,7 +129,6 @@ function copyCoordinatesToClipboard() {
 document.querySelectorAll('.skateSpotPost').forEach((img) => {
     img.addEventListener('click', (event) => {
         const skateSpotId = img.getAttribute('data-id');
-        console.log("skate spot id ", skateSpotId);
 
         fetch(`/post/${skateSpotId}`, {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -139,7 +136,6 @@ document.querySelectorAll('.skateSpotPost').forEach((img) => {
         .then(response => response.json())
         .then(data => {
             
-            console.log(data);
             var status = data.skateSpot.status;
             var statusText = '';
             var statusColor = '';
@@ -320,7 +316,6 @@ function submitDeleteForm() {
 
 function setReviewFormAction(skateSpotId) {
     const form = document.getElementById('addReviewModalID');
-    console.log("ad review skate spot id", skateSpotId);
     if (form) {
         form.action = `/skate-spots/${skateSpotId}/add-review`;
     }

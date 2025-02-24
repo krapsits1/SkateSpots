@@ -139,7 +139,6 @@
                 const fullStars = Math.floor(rating);
                 const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
                 const emptyStars = 5 - fullStars - halfStar;
-                console.log(fullStars, halfStar, emptyStars);   
                 const starRatingHtml = [];
                 for (let i = 1; i <= fullStars; i++) {
                     starRatingHtml.push('<span class="fa fa-star checked"></span>');
@@ -156,7 +155,6 @@
                 if (starRatingContainer) {
                     starRatingContainer.innerHTML = starRatingHtml.join('');
                 }
-                console.log(starRatingContainer);
             });
         });
     </script>
