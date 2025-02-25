@@ -1,10 +1,10 @@
-**SkateSpots.eu**, a platform for skaters to discover, share, and review skate spots!
+**Skatesspots.eu**, a platform for skaters to discover, share, and review skate spots!
 
 <p align="center">
   <img src="public/images/about/Untitled design.png" alt="About SkateSpots.eu" width="900">
 </p>
 
-Visit the website: [SkateSpots.eu](https://skatesspots.eu)
+Visit the website: [Skatesspots.eu](https://skatesspots.eu)
 
 ## Features
 
