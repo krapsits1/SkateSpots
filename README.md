@@ -21,4 +21,7 @@ Visit the website: [Skatesspots.eu](https://skatesspots.eu)
 
 ### 🔒 Authentication
 - Secure user authentication using Google.
+  
+## 👨‍💻 Contributors
+- **Emīls Vētra** (Developer)
 
