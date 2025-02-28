@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 <link rel="shortcut icon" href="#" />
 <link rel="shortcut icon" href="{{ asset('images/myfavicon.png') }}" />
+<meta name="google-site-verification" content="VjCz8574VjHyPfyn8WX-rz_U8HTfunkfD7wouHcudD0" />
 <!-- Open Graph Meta Tags -->
 <meta property="og:title" content="SkatesSpots">
 <meta property="og:description" content="Discover and share the best skate spots around the world.">
